@@ -44,7 +44,7 @@ export default function App() {
     // Membaca audio dari public/backsong.mp3 agar aman jika file belum ada
     audioRef.current = new Audio('/backsong.mp3');
     audioRef.current.loop = true;
-    audioRef.current.volume = 0.05; // Atur volume di sini (rentang 0.0 s/d 1.0)
+    audioRef.current.volume = 0.2; // Atur volume di sini (rentang 0.0 s/d 1.0)
     
     return () => {
       if (audioRef.current) {
