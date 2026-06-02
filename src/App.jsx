@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import bunga1 from './assets/bunga-1.png';
+import bunga2 from './assets/bunga-2.png';
+import bunga3 from './assets/bunga-3.png';
+import coupleImg from './assets/couple.png';
+import stampImg from './assets/stamp.png';
+import ayatImg from './assets/ayat.png';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -177,7 +183,7 @@ export default function App() {
                       transition={{ duration: 0.35 }}
                       style={{ width: '100%', height: '100%' }}
                     >
-                      <img src="/stamp.png" alt="DA" style={{
+                      <img src={stampImg} alt="DA" style={{
                         width: '100%', height: '100%',
                         display: 'block', objectFit: 'cover',
                       }} />
@@ -186,12 +192,12 @@ export default function App() {
                 </div>
 
                 {/* Ornamen bunga amplop */}
-                <img src="/bunga-1.png" alt="" style={{
+                <img src={bunga1} alt="" style={{
                   position: 'absolute', top: '-14%', right: '-14%',
                   width: '48%', zIndex: 25, pointerEvents: 'none',
                   filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
                 }} />
-                <img src="/bunga-2.png" alt="" style={{
+                <img src={bunga2} alt="" style={{
                   position: 'absolute', bottom: '-14%', left: '-14%',
                   width: '48%', zIndex: 25, pointerEvents: 'none',
                   filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
@@ -238,111 +244,217 @@ export default function App() {
               overflowY: 'auto',
               overflowX: 'hidden',
               scrollbarWidth: 'none',
+              scrollSnapType: 'y mandatory',
+              WebkitOverflowScrolling: 'touch',
             }}
           >
-            <img src="/bunga-1.png" alt="" style={{
-              position: 'absolute',
-              top: -30,
-              right: -30,
-              width: 'clamp(160px, 58vw, 350px)',
-              opacity: 0.9,
-              zIndex: 1,
-              pointerEvents: 'none',
-            }} />
-            <img src="/bunga-2.png" alt="" style={{
-              position: 'absolute',
-              bottom: -30,
-              left: -30,
-              width: 'clamp(100px, 45vw, 240px)',
-              opacity: 0.9,
-              zIndex: 1,
-              pointerEvents: 'none',
-            }} />
 
+            {/* ===== SECTION 1: NAMES ===== */}
             <div style={{
               position: 'relative',
-              zIndex: 10,
-              minHeight: '100vh',
+              width: '100%',
+              height: '100vh',
+              overflow: 'hidden',
+              scrollSnapAlign: 'start',
+              scrollSnapStop: 'always',
+            }}>
+              <img src={bunga1} alt="" style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                width: 'clamp(180px, 55vw, 380px)',
+                opacity: 0.9,
+                zIndex: 1,
+                pointerEvents: 'none',
+              }} />
+              <img src={bunga2} alt="" style={{
+                position: 'absolute',
+                bottom: -8,
+                left: -8,
+                width: 'clamp(130px, 45vw, 260px)',
+                opacity: 0.9,
+                zIndex: 1,
+                pointerEvents: 'none',
+              }} />
+
+              <div style={{
+                position: 'relative',
+                zIndex: 10,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                width: '100%',
+                maxWidth: 'min(420px, 90vw)',
+                margin: '0 auto',
+                padding: '0 25px',
+                boxSizing: 'border-box',
+              }}>
+                <motion.p
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  style={{ color: '#888', fontSize: 15.5, marginBottom: 10 }}
+                >
+                  The Wedding of
+                </motion.p>
+
+                <motion.h1
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35, duration: 0.6 }}
+                  style={{
+                    fontFamily: "'Mea Culpa', cursive",
+                    fontSize: 'clamp(3.2rem, 12vw, 5.5rem)',
+                    lineHeight: 0.95,
+                    color: '#1b2b4a',
+                    margin: '10px 0 6px',
+                  }}
+                >Dhani</motion.h1>
+
+                <motion.span
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                  style={{
+                    fontFamily: "'Mea Culpa', cursive",
+                    fontSize: 'clamp(2rem, 8vw, 3.8rem)',
+                    color: '#1b2b4a',
+                    margin: '0 0 10px',
+                  }}
+                >&amp;</motion.span>
+
+                <motion.h1
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.65, duration: 0.6 }}
+                  style={{
+                    fontFamily: "'Mea Culpa', cursive",
+                    fontSize: 'clamp(3.2rem, 12vw, 5.5rem)',
+                    lineHeight: 0.95,
+                    color: '#1b2b4a',
+                    margin: '6px 0 32px',
+                  }}
+                >Amanda</motion.h1>
+
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.85, duration: 0.5 }}
+                  style={{ width: 70, height: 2.5, background: '#d4af37', marginBottom: 32, transformOrigin: 'center' }}
+                />
+
+                <motion.p
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1, duration: 0.6 }}
+                  style={{
+                    color: '#555',
+                    fontSize: 15,
+                    lineHeight: 1.85,
+                    maxWidth: 290,
+                  }}
+                >
+                  By the grace of Allah SWT, we invite you<br/>
+                  to celebrate our wedding ceremony.
+                </motion.p>
+              </div>
+            </div>
+
+            {/* ===== SECTION 2: QURAN VERSE ===== */}
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              height: '100vh',
+              overflow: 'hidden',
+              scrollSnapAlign: 'start',
+              scrollSnapStop: 'always',
+              background: 'linear-gradient(180deg, #fdfdfc 0%, #f7f4ef 30%, #f5f1eb 100%)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              textAlign: 'center',
-              width: '100%',
-              maxWidth: 'min(420px, 90vw)',
-              margin: '0 auto',
-              padding: '15vh 25px 15vh 25px',
-              boxSizing: 'border-box',
+              justifyContent: 'flex-start',
             }}>
-              <motion.p
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                style={{ color: '#888', fontSize: 15.5, marginBottom: 10 }}
-              >
-                The Wedding of
-              </motion.p>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35, duration: 0.6 }}
-                style={{
-                  fontFamily: "'Mea Culpa', cursive",
-                  fontSize: 'clamp(3.2rem, 12vw, 5.5rem)',
-                  lineHeight: 0.95,
+              <div style={{
+                position: 'relative',
+                zIndex: 10,
+                width: '100%',
+                maxWidth: 'min(420px, 90vw)',
+                margin: '0 auto',
+                padding: 'clamp(22px, 4vh, 50px) 25px 0 25px',
+                boxSizing: 'border-box',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                flex: '0 0 auto',
+              }}>
+                {/* Surah title */}
+                <p style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontStyle: 'italic',
+                  fontSize: 'clamp(14px, 4vw, 18px)',
                   color: '#1b2b4a',
-                  margin: '10px 0 6px',
-                }}
-              >Dhani</motion.h1>
+                  marginBottom: 16,
+                  letterSpacing: '1px',
+                }}>
+                  Q.S Ar-Rum : 21
+                </p>
 
-              <motion.span
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                style={{
-                  fontFamily: "'Mea Culpa', cursive",
-                  fontSize: 'clamp(2rem, 8vw, 3.8rem)',
-                  color: '#1b2b4a',
-                  margin: '0 0 10px',
-                }}
-              >&amp;</motion.span>
+                {/* Ayat calligraphy image */}
+                <img src={ayatImg} alt="QS Ar-Rum 21" style={{
+                  width: 'clamp(190px, 62vw, 360px)',
+                  height: 'auto',
+                  marginBottom: 'clamp(12px, 2.5vh, 22px)',
+                  objectFit: 'contain',
+                }} />
 
-              <motion.h1
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.65, duration: 0.6 }}
-                style={{
-                  fontFamily: "'Mea Culpa', cursive",
-                  fontSize: 'clamp(3.2rem, 12vw, 5.5rem)',
-                  lineHeight: 0.95,
-                  color: '#1b2b4a',
-                  margin: '6px 0 32px',
-                }}
-              >Amanda</motion.h1>
+                {/* English translation */}
+                <p style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: 'clamp(12px, 3.4vw, 16px)',
+                  lineHeight: 1.7,
+                  color: '#444',
+                  maxWidth: 320,
+                  marginBottom: 'clamp(8px, 1.5vh, 14px)',
+                }}>
+                  &quot;And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.&quot;
+                </p>
 
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 0.85, duration: 0.5 }}
-                style={{ width: 70, height: 2.5, background: '#d4af37', marginBottom: 32, transformOrigin: 'center' }}
-              />
+                {/* Flower divider - bunga-3 */}
+                <img src={bunga3} alt="" style={{
+                  width: 'clamp(100px, 34vw, 180px)',
+                  height: 'auto',
+                  marginBottom: 'clamp(8px, 1.5vh, 14px)',
+                  objectFit: 'contain',
+                  pointerEvents: 'none',
+                }} />
+              </div>
 
-              <motion.p
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1, duration: 0.6 }}
-                style={{
-                  color: '#555',
-                  fontSize: 15,
-                  lineHeight: 1.85,
-                  maxWidth: 290,
-                }}
-              >
-                By the grace of Allah SWT, we invite you<br/>
-                to celebrate our wedding ceremony.
-              </motion.p>
+              {/* Couple sketch */}
+              <div style={{
+                flex: '1 1 auto',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'flex-end',
+                overflow: 'hidden',
+                position: 'relative',
+                zIndex: 5,
+              }}>
+                <img src={coupleImg} alt="Couple illustration" style={{
+                  width: 'clamp(260px, 75vw, 460px)',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  objectPosition: 'bottom',
+                  display: 'block',
+
+                }} />
+              </div>
             </div>
+
           </motion.div>
         )}
       </AnimatePresence>

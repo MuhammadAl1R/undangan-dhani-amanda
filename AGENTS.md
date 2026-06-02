@@ -23,7 +23,8 @@ Order: `npm run lint && npm run build` before committing.
 - **No router** — single page, envelope → wedding card transition via state
 - **Styling**: inline styles + Framer Motion `style` props (no Tailwind utility classes used in components)
 - **Fonts**: Playfair Display + Mea Culpa (Google Fonts, loaded in `index.css`)
-- **Static assets** in `public/` → referenced as `/filename` (bunga-1.png, bunga-2.png, stamp.png, favicon.svg, icons.svg)
+- **Static assets** in `public/` → only favicon.svg & icons.svg (served as `/filename`)
+- **App images** in `src/assets/` (bunga-1.png, bunga-2.png, bunga-3.png, couple.png, stamp.png, ayat.png) → imported in JSX with ES import
 
 ## Mobile layout notes
 - Envelope dimensions: `width: min(90vw, 400px)`, aspect ratio ~0.72
