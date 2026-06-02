@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import bunga1 from './assets/bunga-1.png';
 import bunga2 from './assets/bunga-2.png';
 import bunga3 from './assets/bunga-3.png';
+import bunga4 from './assets/bunga-4.png';
+import bungaPigura from './assets/bunga-pigura.png';
 import coupleImg from './assets/couple.png';
 import stampImg from './assets/stamp.png';
 import ayatImg from './assets/ayat.png';
@@ -193,12 +195,12 @@ export default function App() {
 
                 {/* Ornamen bunga amplop */}
                 <img src={bunga1} alt="" style={{
-                  position: 'absolute', top: '-14%', right: '-14%',
+                  position: 'absolute', top: '-20%', right: '-10%',
                   width: '48%', zIndex: 25, pointerEvents: 'none',
                   filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
                 }} />
                 <img src={bunga2} alt="" style={{
-                  position: 'absolute', bottom: '-14%', left: '-14%',
+                  position: 'absolute', bottom: '-14%', left: '-10%',
                   width: '48%', zIndex: 25, pointerEvents: 'none',
                   filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
                 }} />
@@ -452,6 +454,204 @@ export default function App() {
                   display: 'block',
 
                 }} />
+              </div>
+            </div>
+
+            {/* ===== SECTION 3: BRIDE & GROOM ===== */}
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              minHeight: '100vh',
+              overflow: 'hidden',
+              scrollSnapAlign: 'start',
+              scrollSnapStop: 'always',
+              background: 'linear-gradient(180deg, #f5f1eb 0%, #f0ece4 30%, #eee9e0 100%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+
+              {/* Header: bunga-4 + title */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                paddingTop: -20,
+                marginBottom: 'clamp(16px, 2.5vh, 32px)',
+              }}>
+                <img src={bunga4} alt="" style={{
+                  width: 'clamp(140px, 45vw, 260px)',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  pointerEvents: 'none',
+                  marginTop: 'clamp(-10px, -1.5vh, -4px)',
+                  marginBottom: -4,
+                }} />
+                <h2 style={{
+                  fontFamily: "'Fleur De Leah', cursive",
+                  fontWeight: 400,
+                  fontSize: 'clamp(3.5rem, 12vw, 5rem)',
+                  color: '#1b2b4a',
+                  letterSpacing: '2px',
+                  margin: 0,
+                }}>Bride &amp; Groom</h2>
+              </div>
+
+              {/* === GROOM: Photo LEFT, Text RIGHT === */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 'clamp(12px, 3.5vw, 32px)',
+                width: '100%',
+                maxWidth: 'min(540px, 95vw)',
+                margin: '0 auto',
+                marginBottom: 'clamp(32px, 6vh, 60px)',
+                padding: '0 12px',
+                boxSizing: 'border-box',
+              }}>
+                {/* Photo frame */}
+                <div style={{ position: 'relative', flex: '0 0 auto' }}>
+                  {/* Bunga pigura decoration */}
+                  <img src={bungaPigura} alt="" style={{
+                    position: 'absolute',
+                    top: '-18%',
+                    right: '-20%',
+                    width: '55%',
+                    zIndex: 3,
+                    pointerEvents: 'none',
+                    filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))',
+                  }} />
+                  {/* Hard coded frame */}
+                  <div style={{
+                    width: 'clamp(150px, 42vw, 240px)',
+                    aspectRatio: '1 / 1',
+                    border: '6px solid #2c2c2c',
+                    borderRadius: 4,
+                    boxShadow: '4px 4px 14px rgba(0,0,0,0.35), inset 0 0 0 2px rgba(255,255,255,0.06)',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    zIndex: 1,
+                    background: '#222',
+                  }}>
+                    <img
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+                      alt="Groom"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Text info */}
+                <div style={{
+                  flex: '1 1 auto',
+                  textAlign: 'center',
+                  minWidth: 0,
+                }}>
+                  <h3 style={{
+                    fontFamily: "'Imperial Script', cursive",
+                    fontSize: 'clamp(2rem, 7vw, 2.8rem)',
+                    color: '#1b2b4a',
+                    lineHeight: 1.1,
+                    margin: '0 0 8px',
+                  }}>
+                    Iman Hadi<br />Ramadhani, S.T.
+                  </h3>
+                  <p style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: 'clamp(12px, 3.2vw, 16px)',
+                    color: '#555',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}>
+                    Putra Pertama Bapak Eko Hadi Susanto<br />
+                    dan Ibu Andriani Kasih. S.Pd.
+                  </p>
+                </div>
+              </div>
+
+              {/* === BRIDE: Text LEFT, Photo RIGHT === */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 'clamp(12px, 3.5vw, 32px)',
+                width: '100%',
+                maxWidth: 'min(540px, 95vw)',
+                margin: '0 auto',
+                padding: '0 12px',
+                boxSizing: 'border-box',
+              }}>
+                {/* Text info */}
+                <div style={{
+                  flex: '1 1 auto',
+                  textAlign: 'center',
+                  minWidth: 0,
+                }}>
+                  <h3 style={{
+                    fontFamily: "'Imperial Script', cursive",
+                    fontSize: 'clamp(2rem, 7vw, 2.8rem)',
+                    color: '#1b2b4a',
+                    lineHeight: 1.1,
+                    margin: '0 0 8px',
+                  }}>
+                    Amanda Febiola<br />Danu Garini, S.T.
+                  </h3>
+                  <p style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: 'clamp(12px, 3.2vw, 16px)',
+                    color: '#555',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}>
+                    Putra Pertama Bapak Agus Budiono (alm)<br />
+                    dan Ibu Sri Danu
+                  </p>
+                </div>
+
+                {/* Photo frame */}
+                <div style={{ position: 'relative', flex: '0 0 auto' }}>
+                  {/* Bunga pigura decoration - mirrored */}
+                  <img src={bungaPigura} alt="" style={{
+                    position: 'absolute',
+                    top: '-18%',
+                    left: '-20%',
+                    width: '55%',
+                    zIndex: 3,
+                    pointerEvents: 'none',
+                    transform: 'scaleX(-1)',
+                    filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))',
+                  }} />
+                  {/* Hard coded frame */}
+                  <div style={{
+                    width: 'clamp(150px, 42vw, 240px)',
+                    aspectRatio: '1 / 1',
+                    border: '6px solid #2c2c2c',
+                    borderRadius: 4,
+                    boxShadow: '4px 4px 14px rgba(0,0,0,0.35), inset 0 0 0 2px rgba(255,255,255,0.06)',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    zIndex: 1,
+                    background: '#222',
+                  }}>
+                    <img
+                      src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=400&fit=crop&crop=face"
+                      alt="Bride"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block',
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
