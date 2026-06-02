@@ -15,6 +15,7 @@ import couple1Img from './assets/couple-1.png';
 import awanImg from './assets/awan.png';
 import bunga7 from './assets/bunga-7.png';
 import bunga8 from './assets/bunga-8.png';
+import bg2 from './assets/bg-2.png';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -458,7 +459,9 @@ export default function App() {
               overflow: 'hidden',
               scrollSnapAlign:'center',
               scrollSnapStop: 'always',
-              background: 'linear-gradient(180deg, #fdfdfc 0%, #f7f4ef 30%, #f5f1eb 100%)',
+              backgroundImage: `url(${bg2})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -498,9 +501,10 @@ export default function App() {
                   fontStyle: 'italic',
                   fontSize: 'clamp(15px, 4.5vw, 20px)',
                   fontWeight: 700,
-                  color: '#111',
+                  color: '#0e0e0eff',
                   marginBottom: 16,
                   letterSpacing: '1px',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.5)',
                 }}>
                   Q.S Ar-Rum : 21
                 </p>
@@ -511,6 +515,7 @@ export default function App() {
                   height: 'auto',
                   marginBottom: 'clamp(18px, 3.5vh, 32px)',
                   objectFit: 'contain',
+                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
                 }} />
 
                 {/* English translation */}
@@ -519,9 +524,10 @@ export default function App() {
                   fontSize: 'clamp(13px, 3.8vw, 17px)',
                   fontWeight: 600,
                   lineHeight: 1.6,
-                  color: '#111',
+                  color: '#000000ff',
                   maxWidth: 380,
                   marginBottom: 'clamp(10px, 2vh, 16px)',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.5)',
                 }}>
                   &quot;And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.&quot;
                 </p>
