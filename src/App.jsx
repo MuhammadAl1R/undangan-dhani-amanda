@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import bunga1 from './assets/bunga-1.png';
 import bunga2 from './assets/bunga-2.png';
@@ -16,11 +16,22 @@ import awanImg from './assets/awan.png';
 import bunga7 from './assets/bunga-7.png';
 import bunga8 from './assets/bunga-8.png';
 import bg2 from './assets/bg-2.png';
+import bg3 from './assets/bg-3.png';
+import cincin from './assets/cincin.png';
+import bunga9 from './assets/bunga-9.png';
+import bunga10 from './assets/bunga-10.png';
+import bunga11 from './assets/bunga-11.png';
+import dhaniBg from './assets/Dhani.png';
+import dhaniTrans from './assets/Dhani-trans.png';
+import amandaBg from './assets/amanda.png';
+import amandaTrans from './assets/amanda-trans.png';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     const update = () => setSize({ w: window.innerWidth, h: window.innerHeight });
@@ -29,10 +40,40 @@ export default function App() {
     return () => window.removeEventListener('resize', update);
   }, []);
 
+  useEffect(() => {
+    // Membaca audio dari public/backsong.mp3 agar aman jika file belum ada
+    audioRef.current = new Audio('/backsong.mp3');
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.05; // Atur volume di sini (rentang 0.0 s/d 1.0)
+    
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
   const handleOpen = () => {
     if (isOpened) return;
     setIsOpened(true);
+    if (audioRef.current) {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(err => console.log("Autoplay blocked or audio load failed:", err));
+    }
     setTimeout(() => setShowCard(true), 900);
+  };
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(err => console.log("Audio play failed:", err));
+    }
   };
 
   const envW = Math.min(size.w * 0.88, 380);
@@ -296,45 +337,101 @@ export default function App() {
 
               {/* CORNERS */}
               {/* Top Left: bunga-5 */}
-              <img src={bunga5} alt="" style={{
-                position: 'absolute',
-                top: -10,
-                left: -10,
-                width: 'clamp(140px, 40vw, 240px)',
-                opacity: 0.9,
-                zIndex: 2,
-                pointerEvents: 'none',
-              }} />
+              <motion.img
+                src={bunga5}
+                alt=""
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  left: -10,
+                  width: 'clamp(140px, 40vw, 240px)',
+                  opacity: 0.9,
+                  zIndex: 2,
+                  pointerEvents: 'none',
+                }}
+                animate={{
+                  rotate: [0, 2.5, -2.5, 0],
+                  y: [0, 4, -4, 0],
+                  x: [0, 3, -3, 0]
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 8,
+                  ease: "easeInOut"
+                }}
+              />
               {/* Top Right: bunga-1 */}
-              <img src={bunga1} alt="" style={{
-                position: 'absolute',
-                top: -8,
-                right: -8,
-                width: 'clamp(180px, 55vw, 380px)',
-                opacity: 0.9,
-                zIndex: 2,
-                pointerEvents: 'none',
-              }} />
+              <motion.img
+                src={bunga1}
+                alt=""
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  width: 'clamp(180px, 55vw, 380px)',
+                  opacity: 0.9,
+                  zIndex: 2,
+                  pointerEvents: 'none',
+                }}
+                animate={{
+                  rotate: [0, -3, 3, 0],
+                  y: [0, -4, 4, 0],
+                  x: [0, -3, 3, 0]
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 9,
+                  ease: "easeInOut"
+                }}
+              />
               {/* Bottom Left: bunga-2 */}
-              <img src={bunga2} alt="" style={{
-                position: 'absolute',
-                bottom: -8,
-                left: -8,
-                width: 'clamp(130px, 45vw, 260px)',
-                opacity: 0.9,
-                zIndex: 2,
-                pointerEvents: 'none',
-              }} />
+              <motion.img
+                src={bunga2}
+                alt=""
+                style={{
+                  position: 'absolute',
+                  bottom: -8,
+                  left: -8,
+                  width: 'clamp(130px, 45vw, 260px)',
+                  opacity: 0.9,
+                  zIndex: 2,
+                  pointerEvents: 'none',
+                }}
+                animate={{
+                  rotate: [0, 2, -2, 0],
+                  y: [0, 3, -3, 0],
+                  x: [0, 2, -2, 0]
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 7,
+                  ease: "easeInOut"
+                }}
+              />
               {/* Bottom Right: bunga-6 */}
-              <img src={bunga6} alt="" style={{
-                position: 'absolute',
-                bottom: -10,
-                right: -10,
-                width: 'clamp(140px, 40vw, 240px)',
-                opacity: 0.9,
-                zIndex: 2,
-                pointerEvents: 'none',
-              }} />
+              <motion.img
+                src={bunga6}
+                alt=""
+                style={{
+                  position: 'absolute',
+                  bottom: -10,
+                  right: -10,
+                  width: 'clamp(140px, 40vw, 240px)',
+                  opacity: 0.9,
+                  zIndex: 2,
+                  pointerEvents: 'none',
+                }}
+                animate={{
+                  rotate: [0, -2, 2, 0],
+                  y: [0, -3, 3, 0],
+                  x: [0, -2, 2, 0]
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 8.5,
+                  ease: "easeInOut"
+                }}
+              />
 
               <div style={{
                 position: 'relative',
@@ -477,24 +574,48 @@ export default function App() {
                 pointerEvents: 'none',
                 zIndex: 1,
               }}>
-                <img src={awanImg} alt="" style={{ position: 'absolute', top: '10%', left: '-25%', width: '80%', opacity: 0.9 }} />
-                <img src={awanImg} alt="" style={{ position: 'absolute', top: '-5%', left: '15%', width: '70%', opacity: 0.5 }} />
-                <img src={awanImg} alt="" style={{ position: 'absolute', top: '10%', right: '-25%', width: '80%', opacity: 0.8 }} />
+                <motion.img
+                  src={awanImg}
+                  alt=""
+                  style={{ position: 'absolute', top: '10%', left: '-25%', width: '80%', opacity: 0.9 }}
+                  animate={{ x: [0, 15, -15, 0] }}
+                  transition={{ repeat: Infinity, duration: 18, ease: "easeInOut" }}
+                />
+                <motion.img
+                  src={awanImg}
+                  alt=""
+                  style={{ position: 'absolute', top: '-5%', left: '15%', width: '70%', opacity: 0.5 }}
+                  animate={{ x: [0, -10, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 22, ease: "easeInOut" }}
+                />
+                <motion.img
+                  src={awanImg}
+                  alt=""
+                  style={{ position: 'absolute', top: '10%', right: '-25%', width: '80%', opacity: 0.8 }}
+                  animate={{ x: [0, -18, 12, 0] }}
+                  transition={{ repeat: Infinity, duration: 20, ease: "easeInOut" }}
+                />
               </div>
-              <div style={{
-                position: 'relative',
-                zIndex: 10,
-                width: '100%',
-                maxWidth: 'min(420px, 90vw)',
-                margin: '0 auto',
-                padding: '28vh 25px 0 25px', // Geser ke bawah agar tidak menabrak awan
-                boxSizing: 'border-box',
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                flex: '0 0 auto',
-              }}>
+              <motion.div
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                style={{
+                  position: 'relative',
+                  zIndex: 10,
+                  width: '100%',
+                  maxWidth: 'min(420px, 90vw)',
+                  margin: '0 auto',
+                  padding: '28vh 25px 0 25px', // Geser ke bawah agar tidak menabrak awan
+                  boxSizing: 'border-box',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  flex: '0 0 auto',
+                }}
+              >
                 {/* Surah title */}
                 <p style={{
                   fontFamily: "'Playfair Display', serif",
@@ -531,7 +652,7 @@ export default function App() {
                 }}>
                   &quot;And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.&quot;
                 </p>
-              </div>
+              </motion.div>
 
               {/* BOTTOM SCENE */}
               <div style={{
@@ -548,26 +669,66 @@ export default function App() {
                 pointerEvents: 'none',
               }}>
                 {/* Couple */}
-                <img src={coupleImg} alt="Couple illustration" style={{
-                  width: 'clamp(220px, 60vw, 380px)',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  objectPosition: 'bottom',
-                  display: 'block',
-                  zIndex: 6,
-                  marginRight: '-5vw',
-                  marginBottom: -5, // Tumpuk ke bawah agar tidak ada space
-                }} />
+                <motion.div
+                  initial={{ opacity: 0, y: 50, x: 20 }}
+                  whileInView={{ opacity: 1, y: 0, x: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 0.95, ease: "easeOut" }}
+                  style={{ zIndex: 6, marginRight: '-5vw' }}
+                >
+                  <motion.img
+                    src={coupleImg}
+                    alt="Couple illustration"
+                    style={{
+                      width: 'clamp(220px, 60vw, 380px)',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      objectPosition: 'bottom',
+                      display: 'block',
+                      marginBottom: -5,
+                    }}
+                    animate={{
+                      y: [0, -4, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 8,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
 
                 {/* Bunga-8 Left Corner */}
-                <img src={bunga8} alt="" style={{
-                  position: 'absolute',
-                  bottom: -10,
-                  left: -15,
-                  width: 'clamp(120px, 35vw, 200px)', // Diperkecil
-                  zIndex: 8,
-                  objectFit: 'contain',
-                }} />
+                <motion.div
+                  initial={{ opacity: 0, y: 35, x: -25, rotate: -10 }}
+                  whileInView={{ opacity: 1, y: 0, x: 0, rotate: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  style={{
+                    position: 'absolute',
+                    bottom: -10,
+                    left: -15,
+                    zIndex: 8,
+                  }}
+                >
+                  <motion.img
+                    src={bunga8}
+                    alt=""
+                    style={{
+                      width: 'clamp(120px, 35vw, 200px)',
+                      objectFit: 'contain',
+                    }}
+                    animate={{
+                      rotate: [0, 2.5, -2.5, 0],
+                      y: [0, 3, -3, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 6,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
 
                 {/* Bunga-7 Repeating Bottom Border */}
                 <div style={{
@@ -591,201 +752,331 @@ export default function App() {
               width: '100%',
               minHeight: '100vh',
               overflow: 'hidden',
-              scrollSnapAlign: 'start',
+              scrollSnapAlign: 'center',
               scrollSnapStop: 'always',
-              background: 'linear-gradient(180deg, #f5f1eb 0%, #f0ece4 30%, #eee9e0 100%)',
+              backgroundImage: `url(${bg3})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
+              paddingTop: '6vh',
             }}>
+              {/* TOP FLOWERS */}
+              <motion.img
+                src={bunga10}
+                alt=""
+                style={{ position: 'absolute', top: 0, left: 0, width: 'clamp(150px, 30vw, 160px)', zIndex: 5, pointerEvents: 'none' }}
+                initial={{ opacity: 0, x: -40, y: -20, rotate: -8 }}
+                whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={{ duration: 0.8 }}
+                animate={{ rotate: [0, 2, -2, 0] }}
+                transition={{ rotate: { repeat: Infinity, duration: 7, ease: "easeInOut" } }}
+              />
+              <motion.img
+                src={bunga9}
+                alt=""
+                style={{ position: 'absolute', top: -10, right: -15, width: 'clamp(150px, 30vw, 160px)', zIndex: 5, pointerEvents: 'none' }}
+                initial={{ opacity: 0, x: 40, y: -20, rotate: 8 }}
+                whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={{ duration: 0.8 }}
+                animate={{ rotate: [0, -2, 2, 0] }}
+                transition={{ rotate: { repeat: Infinity, duration: 8, ease: "easeInOut" } }}
+              />
 
-              {/* Header: bunga-4 + title */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                paddingTop: -20,
-                marginBottom: 'clamp(16px, 2.5vh, 32px)',
-              }}>
-                <img src={bunga4} alt="" style={{
-                  width: 'clamp(140px, 45vw, 260px)',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  pointerEvents: 'none',
-                  marginTop: 'clamp(-10px, -1.5vh, -4px)',
-                  marginBottom: -4,
-                }} />
-                <h2 style={{
-                  fontFamily: "'Fleur De Leah', cursive",
-                  fontWeight: 400,
-                  fontSize: 'clamp(3.5rem, 12vw, 5rem)',
-                  color: '#1b2b4a',
-                  letterSpacing: '2px',
-                  margin: 0,
-                }}>Bride &amp; Groom</h2>
-              </div>
+              {/* TITLE */}
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.7 }}
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 800,
+                  fontSize: 'clamp(30px, 8vw, 42px)',
+                  color: '#2b3f5c',
+                  letterSpacing: '3px',
+                  margin: '120px 0 10px 0',
+                  zIndex: 10,
+                }}
+              >BRIDE &amp; GROOM</motion.h2>
 
-              {/* === GROOM: Photo LEFT, Text RIGHT === */}
+              {/* BRIDE & GROOM CONTAINER */}
               <div style={{
+                position: 'relative',
                 display: 'flex',
-                alignItems: 'center',
                 justifyContent: 'center',
-                gap: 'clamp(12px, 3.5vw, 32px)',
+                alignItems: 'flex-start',
                 width: '100%',
-                maxWidth: 'min(540px, 95vw)',
-                margin: '0 auto',
-                marginBottom: 'clamp(32px, 6vh, 60px)',
-                padding: '0 12px',
+                maxWidth: '650px',
+                gap: 'clamp(20px, 6vw, 60px)',
+                padding: '0 15px',
                 boxSizing: 'border-box',
+                zIndex: 10,
+                marginTop: '45px',
               }}>
-                {/* Photo frame */}
-                <div style={{ position: 'relative', flex: '0 0 auto' }}>
-                  {/* Bunga pigura decoration */}
-                  <img src={bungaPigura} alt="" style={{
+
+                {/* RINGS */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.6, y: -30 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 0.85, ease: "easeOut", delay: 0.25 }}
+                  style={{
                     position: 'absolute',
-                    top: '-18%',
-                    right: '-20%',
-                    width: '55%',
-                    zIndex: 3,
-                    pointerEvents: 'none',
-                    filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))',
-                  }} />
-                  {/* Hard coded frame */}
+                    top: '6%',
+                    left: '40%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 15,
+                  }}
+                >
+                  <motion.img
+                    src={cincin}
+                    alt="Wedding Rings"
+                    style={{
+                      width: 'clamp(70px, 18vw, 110px)',
+                      display: 'block',
+                    }}
+                    animate={{
+                      rotate: [0, 3, -3, 0],
+                      scale: [1, 1.04, 0.96, 1],
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 6,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
+
+                {/* GROOM COLUMN */}
+                <motion.div
+                  initial={{ opacity: 0, x: -35 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: false, amount: 0.15 }}
+                  transition={{ duration: 0.85, ease: "easeOut" }}
+                  style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
+                >
+                  {/* Photo container for pop-out effect */}
                   <div style={{
-                    width: 'clamp(150px, 42vw, 240px)',
-                    aspectRatio: '1 / 1',
-                    border: '6px solid #2c2c2c',
-                    borderRadius: 4,
-                    boxShadow: '4px 4px 14px rgba(0,0,0,0.35), inset 0 0 0 2px rgba(255,255,255,0.06)',
-                    overflow: 'hidden',
                     position: 'relative',
-                    zIndex: 1,
-                    background: '#222',
+                    width: '100%',
+                    maxWidth: '240px',
+                    aspectRatio: '1 / 1.45',
+                    marginBottom: 15,
                   }}>
-                    <img
-                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
-                      alt="Groom"
-                      style={{
+                    {/* Shadow box decoration behind the photo */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '88%',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                      zIndex: 0,
+                    }} />
+
+                    {/* Background image container (Cropped Box) */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '88%',
+                      overflow: 'hidden',
+                      borderRadius: '8px',
+                      backgroundColor: '#e8ebed',
+                      zIndex: 1,
+                    }}>
+                      <img src={dhaniTrans} alt="Groom Background" style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        display: 'block',
-                      }}
-                    />
-                  </div>
-                </div>
+                        objectPosition: 'top',
+                        transform: 'scale(1.21) translateY(-5%)',
+                      }} />
+                    </div>
 
-                {/* Text info */}
-                <div style={{
-                  flex: '1 1 auto',
-                  textAlign: 'center',
-                  minWidth: 0,
-                }}>
-                  <h3 style={{
-                    fontFamily: "'Imperial Script', cursive",
-                    fontSize: 'clamp(2rem, 7vw, 2.8rem)',
-                    color: '#1b2b4a',
-                    lineHeight: 1.1,
-                    margin: '0 0 8px',
-                  }}>
-                    Iman Hadi<br />Ramadhani, S.T.
-                  </h3>
-                  <p style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: 'clamp(12px, 3.2vw, 16px)',
-                    color: '#555',
-                    lineHeight: 1.6,
-                    margin: 0,
-                  }}>
-                    Putra Pertama Bapak Eko Hadi Susanto<br />
-                    dan Ibu Andriani Kasih. S.Pd.
-                  </p>
-                </div>
-              </div>
-
-              {/* === BRIDE: Text LEFT, Photo RIGHT === */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 'clamp(12px, 3.5vw, 32px)',
-                width: '100%',
-                maxWidth: 'min(540px, 95vw)',
-                margin: '0 auto',
-                padding: '0 12px',
-                boxSizing: 'border-box',
-              }}>
-                {/* Text info */}
-                <div style={{
-                  flex: '1 1 auto',
-                  textAlign: 'center',
-                  minWidth: 0,
-                }}>
-                  <h3 style={{
-                    fontFamily: "'Imperial Script', cursive",
-                    fontSize: 'clamp(2rem, 7vw, 2.8rem)',
-                    color: '#1b2b4a',
-                    lineHeight: 1.1,
-                    margin: '0 0 8px',
-                  }}>
-                    Amanda Febiola<br />Danu Garini, S.T.
-                  </h3>
-                  <p style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: 'clamp(12px, 3.2vw, 16px)',
-                    color: '#555',
-                    lineHeight: 1.6,
-                    margin: 0,
-                  }}>
-                    Putra Pertama Bapak Agus Budiono (alm)<br />
-                    dan Ibu Sri Danu
-                  </p>
-                </div>
-
-                {/* Photo frame */}
-                <div style={{ position: 'relative', flex: '0 0 auto' }}>
-                  {/* Bunga pigura decoration - mirrored */}
-                  <img src={bungaPigura} alt="" style={{
-                    position: 'absolute',
-                    top: '-18%',
-                    left: '-20%',
-                    width: '55%',
-                    zIndex: 3,
-                    pointerEvents: 'none',
-                    transform: 'scaleX(-1)',
-                    filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.15))',
-                  }} />
-                  {/* Hard coded frame */}
-                  <div style={{
-                    width: 'clamp(150px, 42vw, 240px)',
-                    aspectRatio: '1 / 1',
-                    border: '6px solid #2c2c2c',
-                    borderRadius: 4,
-                    boxShadow: '4px 4px 14px rgba(0,0,0,0.35), inset 0 0 0 2px rgba(255,255,255,0.06)',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    zIndex: 1,
-                    background: '#222',
-                  }}>
-                    <img
-                      src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=400&fit=crop&crop=face"
-                      alt="Bride"
-                      style={{
+                    {/* Transparent Popout container (Uncropped) */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '88%',
+                      overflow: 'visible',
+                      zIndex: 2,
+                      pointerEvents: 'none',
+                    }}>
+                      <img src={dhaniTrans} alt="Groom Popout" style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        display: 'block',
-                      }}
-                    />
+                        objectPosition: 'top',
+                        transform: 'scale(1.21) translateY(-5%)',
+                      }} />
+                    </div>
                   </div>
-                </div>
+                  <h3 style={{ fontFamily: "'Engagement', cursive", fontSize: 'clamp(26px, 7vw, 36px)', color: '#2b3f5c', margin: '0 0 5px 0', lineHeight: 1.1 }}>Iman Hadi<br/>Ramadhani, S.T.</h3>
+                  <p style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 'clamp(9px, 2.3vw, 11px)', color: '#555', margin: 0, lineHeight: 1.4 }}>
+                    Putra Pertama Bapak Eko Hadi Susanto dan Ibu Andriani Kasih. S.Pd.
+                  </p>
+                </motion.div>
+
+                {/* BRIDE COLUMN */}
+                <motion.div
+                  initial={{ opacity: 0, x: 35 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: false, amount: 0.15 }}
+                  transition={{ duration: 0.85, ease: "easeOut" }}
+                  style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
+                >
+                  {/* Photo container for pop-out effect */}
+                  <div style={{
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: '240px',
+                    aspectRatio: '1 / 1.45',
+                    marginBottom: 15,
+                  }}>
+                    {/* Shadow box decoration behind the photo */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '88%',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                      zIndex: 0,
+                    }} />
+
+                    {/* Background image container (Cropped Box) */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '88%',
+                      overflow: 'hidden',
+                      borderRadius: '8px',
+                      backgroundColor: '#e8ebed',
+                      zIndex: 1,
+                    }}>
+                      <img src={amandaTrans} alt="Bride Background" style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'top',
+                        transform: 'scale(1.1) translateY(-2%)',
+                      }} />
+                    </div>
+
+                    {/* Transparent Popout container (Uncropped) */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '88%',
+                      overflow: 'visible',
+                      zIndex: 2,
+                      pointerEvents: 'none',
+                    }}>
+                      <img src={amandaTrans} alt="Bride Popout" style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'top',
+                        transform: 'scale(1.1) translateY(-2%)',
+                      }} />
+                    </div>
+                  </div>
+                  <h3 style={{ fontFamily: "'Engagement', cursive", fontSize: 'clamp(26px, 7vw, 36px)', color: '#2b3f5c', margin: '0 0 5px 0', lineHeight: 1.1 }}>Amanda Febiola Danu<br/>Garini, S.T.</h3>
+                  <p style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 'clamp(9px, 2.3vw, 11px)', color: '#555', margin: 0, lineHeight: 1.4 }}>
+                    Putri Pertama Bapak Agus Budiono (alm) dan Ibu Sri Danu
+                  </p>
+                </motion.div>
+
               </div>
+
+              {/* BOTTOM FLOWER REPEATING */}
+              <div style={{
+                position: 'absolute',
+                bottom: -15,
+                left: 0,
+                width: '100%',
+                height: 'clamp(100px, 50vw, 180px)',
+                backgroundImage: `url(${bunga11})`,
+                backgroundSize: '400px auto',
+                backgroundRepeat: 'repeat-x',
+                backgroundPosition: 'bottom center',
+                zIndex: 103,
+                pointerEvents: 'none',
+              }} />
+              <div style={{
+                position: 'absolute',
+                bottom: -15,
+                left: 0,
+                width: '100%',
+                height: 'clamp(100px, 50vw, 180px)',
+                backgroundImage: `url(${bunga11})`,
+                backgroundSize: '400px auto',
+                backgroundRepeat: 'repeat-x',
+                backgroundPosition: 'bottom right',
+                zIndex: 103,
+                pointerEvents: 'none',
+                transform: 'scaleX(-1)',
+              }} />
             </div>
 
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* FLOATING MUSIC CONTROLLER */}
+      {showCard && (
+        <motion.button
+          onClick={togglePlay}
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            width: '45px',
+            height: '45px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255, 255, 255, 0.85)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            zIndex: 9999,
+            outline: 'none',
+          }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {isPlaying ? (
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+              style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              💿
+            </motion.div>
+          ) : (
+            <div style={{ fontSize: '20px', opacity: 0.6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              🔇
+            </div>
+          )}
+        </motion.button>
+      )}
     </div>
   );
 }
