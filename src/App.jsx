@@ -8,6 +8,13 @@ import bungaPigura from './assets/bunga-pigura.png';
 import coupleImg from './assets/couple.png';
 import stampImg from './assets/stamp.png';
 import ayatImg from './assets/ayat.png';
+import bungaBorder from './assets/bunga-border.png';
+import bunga5 from './assets/bunga-5.png';
+import bunga6 from './assets/bunga-6.png';
+import couple1Img from './assets/couple-1.png';
+import awanImg from './assets/awan.png';
+import bunga7 from './assets/bunga-7.png';
+import bunga8 from './assets/bunga-8.png';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -260,22 +267,71 @@ export default function App() {
               scrollSnapAlign: 'start',
               scrollSnapStop: 'always',
             }}>
+              {/* TOP BORDER */}
+              <img src={bungaBorder} alt="" style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '50vh',
+                objectFit: 'fill',
+                opacity: 0.35,
+                zIndex: 1,
+                pointerEvents: 'none',
+              }} />
+              {/* BOTTOM BORDER (Flipped) */}
+              <img src={bungaBorder} alt="" style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                height: '50vh',
+                objectFit: 'fill',
+                opacity: 0.35,
+                zIndex: 1,
+                pointerEvents: 'none',
+                transform: 'scaleY(-1)',
+              }} />
+
+              {/* CORNERS */}
+              {/* Top Left: bunga-5 */}
+              <img src={bunga5} alt="" style={{
+                position: 'absolute',
+                top: -10,
+                left: -10,
+                width: 'clamp(140px, 40vw, 240px)',
+                opacity: 0.9,
+                zIndex: 2,
+                pointerEvents: 'none',
+              }} />
+              {/* Top Right: bunga-1 */}
               <img src={bunga1} alt="" style={{
                 position: 'absolute',
                 top: -8,
                 right: -8,
                 width: 'clamp(180px, 55vw, 380px)',
                 opacity: 0.9,
-                zIndex: 1,
+                zIndex: 2,
                 pointerEvents: 'none',
               }} />
+              {/* Bottom Left: bunga-2 */}
               <img src={bunga2} alt="" style={{
                 position: 'absolute',
                 bottom: -8,
                 left: -8,
                 width: 'clamp(130px, 45vw, 260px)',
                 opacity: 0.9,
-                zIndex: 1,
+                zIndex: 2,
+                pointerEvents: 'none',
+              }} />
+              {/* Bottom Right: bunga-6 */}
+              <img src={bunga6} alt="" style={{
+                position: 'absolute',
+                bottom: -10,
+                right: -10,
+                width: 'clamp(140px, 40vw, 240px)',
+                opacity: 0.9,
+                zIndex: 2,
                 pointerEvents: 'none',
               }} />
 
@@ -286,19 +342,25 @@ export default function App() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 textAlign: 'center',
                 width: '100%',
                 maxWidth: 'min(420px, 90vw)',
                 margin: '0 auto',
-                padding: '0 25px',
+                padding: '20vh 0px 0 0px', // Geser ke atas agar tidak tertutup arch
                 boxSizing: 'border-box',
               }}>
                 <motion.p
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
-                  style={{ color: '#888', fontSize: 15.5, marginBottom: 10 }}
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontStyle: 'italic',
+                    color: '#888',
+                    fontSize: 16,
+                    marginBottom: 5
+                  }}
                 >
                   The Wedding of
                 </motion.p>
@@ -308,11 +370,11 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35, duration: 0.6 }}
                   style={{
-                    fontFamily: "'Mea Culpa', cursive",
-                    fontSize: 'clamp(3.2rem, 12vw, 5.5rem)',
+                    fontFamily: "'Rouge Script', cursive",
+                    fontSize: 'clamp(4rem, 15vw, 6.5rem)',
                     lineHeight: 0.95,
                     color: '#1b2b4a',
-                    margin: '10px 0 6px',
+                    margin: '5px 0 6px',
                   }}
                 >Dhani</motion.h1>
 
@@ -321,10 +383,10 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.6 }}
                   style={{
-                    fontFamily: "'Mea Culpa', cursive",
-                    fontSize: 'clamp(2rem, 8vw, 3.8rem)',
+                    fontFamily: "'Rouge Script', cursive",
+                    fontSize: 'clamp(2.5rem, 10vw, 4.5rem)',
                     color: '#1b2b4a',
-                    margin: '0 0 10px',
+                    margin: '0 0 2px',
                   }}
                 >&amp;</motion.span>
 
@@ -333,11 +395,11 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.65, duration: 0.6 }}
                   style={{
-                    fontFamily: "'Mea Culpa', cursive",
-                    fontSize: 'clamp(3.2rem, 12vw, 5.5rem)',
+                    fontFamily: "'Rouge Script', cursive",
+                    fontSize: 'clamp(4rem, 15vw, 6.5rem)',
                     lineHeight: 0.95,
                     color: '#1b2b4a',
-                    margin: '6px 0 32px',
+                    margin: '2px 0 16px',
                   }}
                 >Amanda</motion.h1>
 
@@ -345,7 +407,7 @@ export default function App() {
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ delay: 0.85, duration: 0.5 }}
-                  style={{ width: 70, height: 2.5, background: '#d4af37', marginBottom: 32, transformOrigin: 'center' }}
+                  style={{ width: 70, height: 2.5, background: '#d4af37', marginBottom: 16, transformOrigin: 'center' }}
                 />
 
                 <motion.p
@@ -353,15 +415,38 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1, duration: 0.6 }}
                   style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontStyle: 'italic',
                     color: '#555',
-                    fontSize: 15,
-                    lineHeight: 1.85,
+                    fontSize: 14,
+                    lineHeight: 1.5,
                     maxWidth: 290,
                   }}
                 >
-                  By the grace of Allah SWT, we invite you<br/>
-                  to celebrate our wedding ceremony.
+                  Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.
                 </motion.p>
+              </div>
+
+              {/* BOTTOM ARCH & COUPLE */}
+              <div style={{
+                position: 'absolute',
+                bottom: -5,
+                left: 0,
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+                zIndex: 5,
+                pointerEvents: 'none',
+              }}>
+                <img src={couple1Img} alt="" style={{
+                  width: 'clamp(250px, 85vw, 460px)',
+                  maxHeight: '36vh',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  objectPosition: 'bottom',
+                  display: 'block',
+                }} />
               </div>
             </div>
 
@@ -371,7 +456,7 @@ export default function App() {
               width: '100%',
               height: '100vh',
               overflow: 'hidden',
-              scrollSnapAlign: 'start',
+              scrollSnapAlign:'center',
               scrollSnapStop: 'always',
               background: 'linear-gradient(180deg, #fdfdfc 0%, #f7f4ef 30%, #f5f1eb 100%)',
               display: 'flex',
@@ -379,13 +464,27 @@ export default function App() {
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
+              {/* CLOUDS (Awan) */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '35vh',
+                pointerEvents: 'none',
+                zIndex: 1,
+              }}>
+                <img src={awanImg} alt="" style={{ position: 'absolute', top: '10%', left: '-25%', width: '80%', opacity: 0.9 }} />
+                <img src={awanImg} alt="" style={{ position: 'absolute', top: '-5%', left: '15%', width: '70%', opacity: 0.5 }} />
+                <img src={awanImg} alt="" style={{ position: 'absolute', top: '10%', right: '-25%', width: '80%', opacity: 0.8 }} />
+              </div>
               <div style={{
                 position: 'relative',
                 zIndex: 10,
                 width: '100%',
                 maxWidth: 'min(420px, 90vw)',
                 margin: '0 auto',
-                padding: 'clamp(22px, 4vh, 50px) 25px 0 25px',
+                padding: '28vh 25px 0 25px', // Geser ke bawah agar tidak menabrak awan
                 boxSizing: 'border-box',
                 textAlign: 'center',
                 display: 'flex',
@@ -397,8 +496,9 @@ export default function App() {
                 <p style={{
                   fontFamily: "'Playfair Display', serif",
                   fontStyle: 'italic',
-                  fontSize: 'clamp(14px, 4vw, 18px)',
-                  color: '#1b2b4a',
+                  fontSize: 'clamp(15px, 4.5vw, 20px)',
+                  fontWeight: 700,
+                  color: '#111',
                   marginBottom: 16,
                   letterSpacing: '1px',
                 }}>
@@ -407,52 +507,74 @@ export default function App() {
 
                 {/* Ayat calligraphy image */}
                 <img src={ayatImg} alt="QS Ar-Rum 21" style={{
-                  width: 'clamp(190px, 62vw, 360px)',
+                  width: 'clamp(220px, 70vw, 400px)',
                   height: 'auto',
-                  marginBottom: 'clamp(12px, 2.5vh, 22px)',
+                  marginBottom: 'clamp(18px, 3.5vh, 32px)',
                   objectFit: 'contain',
                 }} />
 
                 {/* English translation */}
                 <p style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 'clamp(12px, 3.4vw, 16px)',
-                  lineHeight: 1.7,
-                  color: '#444',
-                  maxWidth: 320,
-                  marginBottom: 'clamp(8px, 1.5vh, 14px)',
+                  fontSize: 'clamp(13px, 3.8vw, 17px)',
+                  fontWeight: 600,
+                  lineHeight: 1.6,
+                  color: '#111',
+                  maxWidth: 380,
+                  marginBottom: 'clamp(10px, 2vh, 16px)',
                 }}>
                   &quot;And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.&quot;
                 </p>
-
-                {/* Flower divider - bunga-3 */}
-                <img src={bunga3} alt="" style={{
-                  width: 'clamp(100px, 34vw, 180px)',
-                  height: 'auto',
-                  marginBottom: 'clamp(8px, 1.5vh, 14px)',
-                  objectFit: 'contain',
-                  pointerEvents: 'none',
-                }} />
               </div>
 
-              {/* Couple sketch */}
+              {/* BOTTOM SCENE */}
               <div style={{
-                flex: '1 1 auto',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
                 width: '100%',
+                height: '60vh',
                 display: 'flex',
                 alignItems: 'flex-end',
-                justifyContent: 'flex-end',
+                justifyContent: 'flex-end', // Kanan bawah
                 overflow: 'hidden',
-                position: 'relative',
                 zIndex: 5,
+                pointerEvents: 'none',
               }}>
+                {/* Couple */}
                 <img src={coupleImg} alt="Couple illustration" style={{
-                  width: 'clamp(260px, 75vw, 460px)',
+                  width: 'clamp(220px, 60vw, 380px)',
                   height: 'auto',
                   objectFit: 'contain',
                   objectPosition: 'bottom',
                   display: 'block',
+                  zIndex: 6,
+                  marginRight: '-5vw',
+                  marginBottom: -5, // Tumpuk ke bawah agar tidak ada space
+                }} />
 
+                {/* Bunga-8 Left Corner */}
+                <img src={bunga8} alt="" style={{
+                  position: 'absolute',
+                  bottom: -10,
+                  left: -15,
+                  width: 'clamp(120px, 35vw, 200px)', // Diperkecil
+                  zIndex: 8,
+                  objectFit: 'contain',
+                }} />
+
+                {/* Bunga-7 Repeating Bottom Border */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: -2,
+                  left: 30,
+                  width: '100%',
+                  height: 'clamp(135px, 40vw, 200px)',
+                  backgroundImage: `url(${bunga7})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'repeat-x',
+                  backgroundPosition: 'bottom right',
+                  zIndex: 7,
                 }} />
               </div>
             </div>
