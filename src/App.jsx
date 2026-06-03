@@ -1,41 +1,41 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import bunga1 from './assets/bunga-1.png';
-import bunga2 from './assets/bunga-2.png';
-import coupleImg from './assets/couple.png';
-import stampImg from './assets/stamp.png';
-import ayatImg from './assets/ayat.png';
-import bungaBorder from './assets/bunga-border.png';
-import bunga5 from './assets/bunga-5.png';
-import bunga6 from './assets/bunga-6.png';
-import couple1Img from './assets/couple-1.png';
-import awanImg from './assets/awan.png';
-import bunga7 from './assets/bunga-7.png';
-import bunga8 from './assets/bunga-8.png';
-import bg2 from './assets/bg-2.png';
-import bg3 from './assets/bg-3.png';
-import cincin from './assets/cincin.png';
-import bunga9 from './assets/bunga-9.png';
-import bunga10 from './assets/bunga-10.png';
-import bunga11 from './assets/bunga-11.png';
-import dhaniTrans from './assets/Dhani-trans.png';
-import amandaTrans from './assets/amanda-trans.png';
-import bunga12 from './assets/bunga-12.png';
-import bunga13 from './assets/bunga-13.png';
-import castleImg from './assets/castle.png';
-import bg4 from './assets/bg-4.png';
-import bg5 from './assets/bg-5.png';
-import garisEmas from './assets/garis-emas.png';
-import jam from './assets/jam.png';
-import couple3Img from './assets/couple-3.png';
-import bunga16 from './assets/bunga-16.png';
-import bunga17 from './assets/bunga-17.png';
-import bunga15 from './assets/bunga-15.png';
-import bunga14 from './assets/bunga-14.png';
-import blueLine from './assets/blue-line.png';
-import bunga3 from './assets/bunga-3.png';
-import butterflyImg from './assets/butterfly.png';
-import bg6 from './assets/bg-6.png';
+import bunga1 from './assets/bunga-1.webp';
+import bunga2 from './assets/bunga-2.webp';
+import coupleImg from './assets/couple.webp';
+import stampImg from './assets/stamp.webp';
+import ayatImg from './assets/ayat.webp';
+import bungaBorder from './assets/bunga-border.webp';
+import bunga5 from './assets/bunga-5.webp';
+import bunga6 from './assets/bunga-6.webp';
+import couple1Img from './assets/couple-1.webp';
+import awanImg from './assets/awan.webp';
+import bunga7 from './assets/bunga-7.webp';
+import bunga8 from './assets/bunga-8.webp';
+import bg2 from './assets/bg-2.webp';
+import bg3 from './assets/bg-3.webp';
+import cincin from './assets/cincin.webp';
+import bunga9 from './assets/bunga-9.webp';
+import bunga10 from './assets/bunga-10.webp';
+import bunga11 from './assets/bunga-11.webp';
+import dhaniTrans from './assets/Dhani-trans.webp';
+import amandaTrans from './assets/amanda-trans.webp';
+import bunga12 from './assets/bunga-12.webp';
+import bunga13 from './assets/bunga-13.webp';
+import castleImg from './assets/castle.webp';
+import bg4 from './assets/bg-4.webp';
+import bg5 from './assets/bg-5.webp';
+import garisEmas from './assets/garis-emas.webp';
+import jam from './assets/jam.webp';
+import couple3Img from './assets/couple-3.webp';
+import bunga16 from './assets/bunga-16.webp';
+import bunga17 from './assets/bunga-17.webp';
+import bunga15 from './assets/bunga-15.webp';
+import bunga14 from './assets/bunga-14.webp';
+import blueLine from './assets/blue-line.webp';
+import bunga3 from './assets/bunga-3.webp';
+import butterflyImg from './assets/butterfly.webp';
+import bg6 from './assets/bg-6.webp';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -1851,8 +1851,8 @@ export default function App() {
               alt=""
               style={{ position: 'absolute', width: 'clamp(20px, 5vw, 30px)' }}
               initial={{ left: '-10%', top: '110%', opacity: 0 }}
-              animate={{ 
-                left: ['-10%', '50%', '110%'], 
+              animate={{
+                left: ['-10%', '50%', '110%'],
                 top: ['110%', '40%', '-10%'],
                 opacity: [0, 1, 1, 0],
                 rotate: [15, -15, 15]
@@ -1864,8 +1864,8 @@ export default function App() {
               alt=""
               style={{ position: 'absolute', width: 'clamp(15px, 4vw, 25px)', transform: 'scaleX(-1)' }}
               initial={{ left: '110%', top: '60%', opacity: 0 }}
-              animate={{ 
-                left: ['110%', '30%', '-10%'], 
+              animate={{
+                left: ['110%', '30%', '-10%'],
                 top: ['60%', '80%', '20%'],
                 opacity: [0, 1, 1, 0],
                 rotate: [-10, 20, -10]
@@ -1877,8 +1877,8 @@ export default function App() {
               alt=""
               style={{ position: 'absolute', width: 'clamp(25px, 6vw, 35px)' }}
               initial={{ left: '20%', top: '-10%', opacity: 0 }}
-              animate={{ 
-                left: ['20%', '80%', '40%'], 
+              animate={{
+                left: ['20%', '80%', '40%'],
                 top: ['-10%', '50%', '110%'],
                 opacity: [0, 1, 1, 0],
                 rotate: [45, 15, 60]
@@ -1891,8 +1891,8 @@ export default function App() {
               alt=""
               style={{ position: 'absolute', width: 'clamp(18px, 4.5vw, 28px)' }}
               initial={{ left: '-15%', top: '30%', opacity: 0 }}
-              animate={{ 
-                left: ['-15%', '115%'], 
+              animate={{
+                left: ['-15%', '115%'],
                 top: ['30%', '15%'],
                 opacity: [0, 1, 1, 0],
                 rotate: [10, -5]
@@ -1905,8 +1905,8 @@ export default function App() {
               alt=""
               style={{ position: 'absolute', width: 'clamp(22px, 5.5vw, 32px)', transform: 'scaleX(-1)' }}
               initial={{ left: '115%', top: '90%', opacity: 0 }}
-              animate={{ 
-                left: ['115%', '40%', '-15%'], 
+              animate={{
+                left: ['115%', '40%', '-15%'],
                 top: ['90%', '70%', '110%'],
                 opacity: [0, 1, 1, 0],
                 rotate: [-20, 10, -20]
@@ -1919,8 +1919,8 @@ export default function App() {
               alt=""
               style={{ position: 'absolute', width: 'clamp(16px, 4vw, 26px)' }}
               initial={{ left: '40%', top: '115%', opacity: 0 }}
-              animate={{ 
-                left: ['40%', '60%', '20%', '50%'], 
+              animate={{
+                left: ['40%', '60%', '20%', '50%'],
                 top: ['115%', '70%', '30%', '-15%'],
                 opacity: [0, 1, 1, 0],
                 rotate: [0, 30, -30, 0]
@@ -1933,8 +1933,8 @@ export default function App() {
               alt=""
               style={{ position: 'absolute', width: 'clamp(24px, 6vw, 34px)', transform: 'scaleX(-1)' }}
               initial={{ left: '80%', top: '-15%', opacity: 0 }}
-              animate={{ 
-                left: ['80%', '20%', '-15%'], 
+              animate={{
+                left: ['80%', '20%', '-15%'],
                 top: ['-15%', '40%', '115%'],
                 opacity: [0, 1, 1, 0],
                 rotate: [10, -20, 10]
@@ -1947,8 +1947,8 @@ export default function App() {
               alt=""
               style={{ position: 'absolute', width: 'clamp(20px, 5vw, 30px)' }}
               initial={{ left: '-20%', top: '60%', opacity: 0 }}
-              animate={{ 
-                left: ['-20%', '80%', '120%'], 
+              animate={{
+                left: ['-20%', '80%', '120%'],
                 top: ['60%', '90%', '20%'],
                 opacity: [0, 1, 1, 0],
                 rotate: [20, -10, 30]
