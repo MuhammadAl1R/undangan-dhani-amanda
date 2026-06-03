@@ -2,9 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import bunga1 from './assets/bunga-1.png';
 import bunga2 from './assets/bunga-2.png';
-import bunga3 from './assets/bunga-3.png';
-import bunga4 from './assets/bunga-4.png';
-import bungaPigura from './assets/bunga-pigura.png';
 import coupleImg from './assets/couple.png';
 import stampImg from './assets/stamp.png';
 import ayatImg from './assets/ayat.png';
@@ -21,10 +18,12 @@ import cincin from './assets/cincin.png';
 import bunga9 from './assets/bunga-9.png';
 import bunga10 from './assets/bunga-10.png';
 import bunga11 from './assets/bunga-11.png';
-import dhaniBg from './assets/Dhani.png';
 import dhaniTrans from './assets/Dhani-trans.png';
-import amandaBg from './assets/amanda.png';
 import amandaTrans from './assets/amanda-trans.png';
+import bunga12 from './assets/bunga-12.png';
+import bunga13 from './assets/bunga-13.png';
+import castleImg from './assets/castle.png';
+import bg4 from './assets/bg-4.png';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -84,13 +83,39 @@ export default function App() {
     <div style={{
       position: 'fixed',
       inset: 0,
-      background: '#f0ece3',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       overflow: 'hidden',
       fontFamily: "'Playfair Display', serif",
+      backgroundColor: '#1b2b4a',
     }}>
+      {/* BACKGROUND BLUR (Visible on Desktop / Tablet) */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: `url(${bg4})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'blur(20px) brightness(0.6)',
+        transform: 'scale(1.1)',
+        zIndex: 1,
+      }} />
+
+      {/* MAIN MOBILE CONTAINER */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '600px',
+        height: '100%',
+        backgroundColor: '#fdfdfc',
+        boxShadow: '0 0 50px rgba(0, 0, 0, 0.4)',
+        zIndex: 10,
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
 
       {/* ===== SCENE 1: AMPLOP REALISTIK ===== */}
       <AnimatePresence>
@@ -263,7 +288,7 @@ export default function App() {
                 transition: { duration: 2.2, repeat: Infinity, ease: 'easeInOut' },
               }}
               style={{
-                position: 'fixed',
+                position: 'absolute',
                 bottom: '7%',
                 left: '50%',
                 transform: 'translateX(-50%)',
@@ -764,28 +789,38 @@ export default function App() {
               paddingTop: '6vh',
             }}>
               {/* TOP FLOWERS */}
-              <motion.img
-                src={bunga10}
-                alt=""
-                style={{ position: 'absolute', top: 0, left: 0, width: 'clamp(150px, 30vw, 160px)', zIndex: 5, pointerEvents: 'none' }}
-                initial={{ opacity: 0, x: -40, y: -20, rotate: -8 }}
-                whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
-                viewport={{ once: false, amount: 0.1 }}
-                transition={{ duration: 0.8 }}
-                animate={{ rotate: [0, 2, -2, 0] }}
-                transition={{ rotate: { repeat: Infinity, duration: 7, ease: "easeInOut" } }}
-              />
-              <motion.img
-                src={bunga9}
-                alt=""
-                style={{ position: 'absolute', top: -10, right: -15, width: 'clamp(150px, 30vw, 160px)', zIndex: 5, pointerEvents: 'none' }}
-                initial={{ opacity: 0, x: 40, y: -20, rotate: 8 }}
-                whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
-                viewport={{ once: false, amount: 0.1 }}
-                transition={{ duration: 0.8 }}
-                animate={{ rotate: [0, -2, 2, 0] }}
-                transition={{ rotate: { repeat: Infinity, duration: 8, ease: "easeInOut" } }}
-              />
+              <div style={{ position: 'absolute', top: 0, left: 0, zIndex: 5, pointerEvents: 'none' }}>
+                <motion.div
+                  initial={{ opacity: 0, x: -40, y: -20, rotate: -8 }}
+                  whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <motion.img
+                    src={bunga10}
+                    alt=""
+                    style={{ width: 'clamp(150px, 30vw, 160px)', display: 'block' }}
+                    animate={{ rotate: [0, 2, -2, 0] }}
+                    transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
+                  />
+                </motion.div>
+              </div>
+              <div style={{ position: 'absolute', top: -10, right: -15, zIndex: 5, pointerEvents: 'none' }}>
+                <motion.div
+                  initial={{ opacity: 0, x: 40, y: -20, rotate: 8 }}
+                  whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <motion.img
+                    src={bunga9}
+                    alt=""
+                    style={{ width: 'clamp(150px, 30vw, 160px)', display: 'block' }}
+                    animate={{ rotate: [0, -2, 2, 0] }}
+                    transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+                  />
+                </motion.div>
+              </div>
 
               {/* TITLE */}
               <motion.h2
@@ -1034,6 +1069,248 @@ export default function App() {
               }} />
             </div>
 
+            {/* ===== SECTION 4: PLACE ===== */}
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              height: '100vh',
+              overflow: 'hidden',
+              scrollSnapAlign: 'center',
+              scrollSnapStop: 'always',
+              backgroundImage: `url(${bg4})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+            }}>
+              {/* TOP FLOWER */}
+              <div style={{
+                position: 'absolute',
+                top: -10,
+                left: -20,
+                zIndex: 5,
+                pointerEvents: 'none',
+              }}>
+                <motion.div
+                  initial={{ opacity: 0, y: -40, x: -40, rotate: -5 }}
+                  whileInView={{ opacity: 1, y: 0, x: 0, rotate: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 1, ease: 'easeOut' }}
+                >
+                  <motion.img
+                    src={bunga12}
+                    alt=""
+                    style={{
+                      width: 'clamp(280px, 75vw, 450px)',
+                      transformOrigin: 'top left',
+                      display: 'block',
+                    }}
+                    animate={{
+                      rotate: [0, 1.5, -1.5, 0],
+                      y: [0, 2, -2, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 8,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
+              </div>
+
+              <div style={{
+                position: 'relative',
+                zIndex: 10,
+                width: '100%',
+                maxWidth: 'min(420px, 90vw)',
+                margin: '0 auto',
+                paddingTop: '25vh',
+                boxSizing: 'border-box',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.8 }}
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontStyle: 'italic',
+                    fontWeight: 600,
+                    fontSize: 'clamp(24px, 7vw, 36px)',
+                    color: '#2b3f5c',
+                    marginBottom: '20px',
+                  }}
+                >
+                  Place of Our Wedding
+                </motion.p>
+
+                <motion.h3
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.8, delay: 0.15 }}
+                  style={{
+                    fontFamily: 'sans-serif',
+                    fontWeight: 'bold',
+                    fontSize: 'clamp(28px, 8vw, 38px)',
+                    color: '#1b2b4a',
+                    marginBottom: '15px',
+                    lineHeight: 1.2,
+                  }}
+                >
+                  RM. Kaliurang Malang
+                </motion.h3>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  style={{
+                    fontFamily: 'sans-serif',
+                    fontSize: 'clamp(14px, 3.8vw, 16px)',
+                    color: '#4a5568',
+                    lineHeight: 1.6,
+                    maxWidth: '320px',
+                    margin: '0 auto 25px',
+                  }}
+                >
+                  Jl. Kaliurang No.44, Lowokwaru,<br />
+                  Kec. Lowokwaru, Kota Malang,<br />
+                  Jawa Timur 65111
+                </motion.p>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.6, delay: 0.45 }}
+                >
+                  <a
+                    href="https://maps.app.goo.gl/JvgeBJkc4XsPmQJj7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      padding: '10px 24px',
+                      borderRadius: '30px',
+                      backgroundColor: '#243d63',
+                      color: '#ffffff',
+                      textDecoration: 'none',
+                      fontFamily: 'sans-serif',
+                      fontWeight: 'bold',
+                      fontSize: '15px',
+                      boxShadow: '0 4px 15px rgba(36,61,99,0.25)',
+                      transition: 'all 0.3s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#1b2b4a';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#243d63';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <span>Google Maps</span>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '26px',
+                      height: '26px',
+                      borderRadius: '50%',
+                      border: '1.5px solid #ffffff',
+                    }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                    </div>
+                  </a>
+                </motion.div>
+              </div>
+
+              {/* CASTLE */}
+              <div style={{
+                position: 'absolute',
+                bottom: -40,
+                right: -50,
+                zIndex: 4,
+                pointerEvents: 'none',
+              }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 50, x: 30 }}
+                  whileInView={{ opacity: 1, y: 0, x: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 1.1, ease: 'easeOut', delay: 0.1 }}
+                >
+                  <motion.img
+                    src={castleImg}
+                    alt="Castle"
+                    style={{
+                      height: '50vh',
+                      width: 'clamp(300px, 70vw, 420px)',
+                      transformOrigin: 'bottom right',
+                      display: 'block',
+                    }}
+                    animate={{
+                      y: [0, -2, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 9,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
+              </div>
+
+              {/* BOTTOM LEFT FLOWER */}
+              <div style={{
+                position: 'absolute',
+                bottom: -10,
+                left: -10,
+                zIndex: 6,
+                pointerEvents: 'none',
+              }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40, x: -40, rotate: -5 }}
+                  whileInView={{ opacity: 1, y: 0, x: 0, rotate: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
+                >
+                  <motion.img
+                    src={bunga13}
+                    alt=""
+                    style={{
+                      width: 'clamp(200px, 55vw, 320px)',
+                      height: "30vh",
+                      transformOrigin: 'bottom left',
+                      display: 'block',
+                    }}
+                    animate={{
+                      rotate: [0, 2, -2, 0],
+                      y: [0, -3, 3, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 7,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
+              </div>
+            </div>
+
           </motion.div>
         )}
       </AnimatePresence>
@@ -1043,7 +1320,7 @@ export default function App() {
         <motion.button
           onClick={togglePlay}
           style={{
-            position: 'fixed',
+            position: 'absolute',
             bottom: '24px',
             right: '24px',
             width: '45px',
@@ -1077,6 +1354,7 @@ export default function App() {
           )}
         </motion.button>
       )}
+      </div> {/* END MAIN MOBILE CONTAINER */}
     </div>
   );
 }
