@@ -1095,7 +1095,237 @@ export default function App() {
               }} />
             </div>
 
-            {/* ===== SECTION 4: PLACE ===== */}
+            {/* ===== SECTION 4: DATE & TIME & COUNTDOWN ===== */}
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              minHeight: '100vh',
+              overflow: 'hidden',
+              scrollSnapAlign: 'center',
+              scrollSnapStop: 'always',
+              backgroundImage: `url(${bg5})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              paddingTop: '12vh',
+              paddingLeft: '20px',
+              paddingRight: '20px',
+              boxSizing: 'border-box',
+            }}>
+              
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.7 }}
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 600,
+                  fontSize: 'clamp(36px, 8vw, 46px)',
+                  letterSpacing: '4px',
+                  color: '#1b2b4a',
+                  marginBottom: '15px',
+                  textAlign: 'center',
+                }}
+              >
+                DATE &amp; TIME
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '15px',
+                  marginBottom: '10px',
+                  fontFamily: "'Playfair Display', serif"
+                }}
+              >
+                <span style={{ fontSize: 'clamp(4rem, 15vw, 6rem)', fontWeight: 800, color: '#1b2b4a', lineHeight: 1 }}>07</span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}>
+                  <br />
+                  <span style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', fontWeight: 700, color: '#1b2b4a', lineHeight: 1.2 }}>December</span>
+                  <span style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', fontWeight: 700, color: '#1b2b4a', lineHeight: 1.2 }}>2026</span>
+                </div>
+              </motion.div>
+
+              <motion.img 
+                initial={{ opacity: 0, width: 0 }}
+                whileInView={{ opacity: 1, width: 'clamp(150px, 40vw, 250px)' }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                src={garisEmas} 
+                alt="Garis Emas" 
+                style={{
+                  marginBottom: '-10px',
+                  height: 'auto',
+                  objectFit: 'contain'
+                }} 
+              />
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: 'clamp(18px, 5vw, 22px)',
+                  color: '#1b2b4a',
+                  fontWeight: 600,
+                  marginBottom: '35px',
+                  letterSpacing: '1px'
+                }}
+              >
+                06.00 PM - 09.00 PM
+              </motion.p>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 600,
+                  fontSize: 'clamp(20px, 6vw, 32px)',
+                  letterSpacing: '4px',
+                  color: '#1b2b4a',
+                  marginBottom: '20px',
+                  textAlign: 'center'
+                }}
+              >
+                COUNTDOWN
+              </motion.h2>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.5 }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 'clamp(8px, 2vw, 15px)',
+                  marginBottom: '40px',
+                  width: '100%'
+                }}
+              >
+                {[
+                  { label: 'Days', value: timeLeft.days },
+                  { label: 'Hours', value: timeLeft.hours },
+                  { label: 'Minutes', value: timeLeft.minutes },
+                  { label: 'Seconds', value: timeLeft.seconds }
+                ].map((item, index, arr) => (
+                  <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 2vw, 15px)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: 'clamp(13px, 3.8vw, 17px)', fontWeight: 700, color: '#000' }}>{item.label}</span>
+                      <div style={{
+                        backgroundColor: '#2b3f5c',
+                        color: '#fff',
+                        borderRadius: '12px',
+                        padding: '10px 8px',
+                        minWidth: 'clamp(45px, 12vw, 55px)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 'clamp(20px, 6vw, 26px)',
+                        fontWeight: 700,
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.15)'
+                      }}>
+                        {String(item.value).padStart(2, '0')}
+                      </div>
+                    </div>
+                    {index < arr.length - 1 && (
+                      <span style={{ fontSize: 'clamp(20px, 6vw, 30px)', fontWeight: 700, color: '#000', transform: 'translateY(12px)' }}>:</span>
+                    )}
+                  </div>
+                ))}
+              </motion.div>
+
+              <motion.a
+                href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=The+Wedding+of+Dhani+%26+Amanda&dates=20261207T110000Z/20261207T140000Z&details=Dengan+memohon+rahmat+dan+ridho+Allah+SWT,+kami+mengundang+Bapak/Ibu/Saudara/i+untuk+menghadiri+acara+pernikahan+kami.&location=RM.+Kaliurang+Malang"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.6 }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '12px',
+                  backgroundColor: '#2b3f5c',
+                  color: '#fff',
+                  padding: '8px 24px',
+                  borderRadius: '30px',
+                  textDecoration: 'none',
+                  boxShadow: '0 6px 15px rgba(43,63,92,0.3)',
+                  zIndex: 10
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
+                  <span style={{ fontSize: '11px', fontWeight: 500 }}>Save to</span>
+                  <span style={{ fontSize: '14px', fontWeight: 700 }}>Calendar</span>
+                </div>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                  <line x1="8" y1="14" x2="8.01" y2="14"></line>
+                  <line x1="12" y1="14" x2="12.01" y2="14"></line>
+                  <line x1="16" y1="14" x2="16.01" y2="14"></line>
+                  <line x1="8" y1="18" x2="8.01" y2="18"></line>
+                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                  <line x1="16" y1="18" x2="16.01" y2="18"></line>
+                </svg>
+              </motion.a>
+
+              {/* JAM IMAGE */}
+              <motion.div
+                initial={{ opacity: 0, x: -30, y: 30 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
+                style={{
+                  position: 'absolute',
+                  bottom: -20,
+                  left: -15,
+                  zIndex: 5,
+                  pointerEvents: 'none'
+                }}
+              >
+                <motion.img
+                  src={jam}
+                  alt="Jam"
+                  style={{
+                    width: 'clamp(140px, 45vw, 220px)',
+                    display: 'block'
+                  }}
+                  animate={{
+                    rotate: [0, -6, 6, -4, 4, 0]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2.5,
+                    ease: "easeInOut",
+                    repeatDelay: 1.5
+                  }}
+                />
+              </motion.div>
+            </div>
+
+            {/* ===== SECTION 5: PLACE ===== */}
             <div style={{
               position: 'relative',
               width: '100%',
@@ -1335,216 +1565,6 @@ export default function App() {
                   />
                 </motion.div>
               </div>
-            </div>
-
-            {/* ===== SECTION 5: DATE & TIME & COUNTDOWN ===== */}
-            <div style={{
-              position: 'relative',
-              width: '100%',
-              minHeight: '100vh',
-              overflow: 'hidden',
-              scrollSnapAlign: 'center',
-              scrollSnapStop: 'always',
-              backgroundImage: `url(${bg5})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '10vh 20px',
-              boxSizing: 'border-box',
-            }}>
-              
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.7 }}
-                style={{
-                  fontFamily: 'sans-serif',
-                  fontWeight: 600,
-                  fontSize: 'clamp(20px, 6vw, 28px)',
-                  letterSpacing: '4px',
-                  color: '#000',
-                  marginBottom: '20px',
-                  textAlign: 'center'
-                }}
-              >
-                DATE &amp; TIME
-              </motion.h2>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.7, delay: 0.1 }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '15px',
-                  marginBottom: '15px'
-                }}
-              >
-                <span style={{ fontSize: 'clamp(4rem, 15vw, 6rem)', fontWeight: 800, color: '#000', lineHeight: 1 }}>07</span>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}>
-                  <span style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', fontWeight: 700, color: '#000', lineHeight: 1.2 }}>December</span>
-                  <span style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', fontWeight: 700, color: '#000', lineHeight: 1.2 }}>2026</span>
-                </div>
-              </motion.div>
-
-              <motion.img 
-                initial={{ opacity: 0, width: 0 }}
-                whileInView={{ opacity: 1, width: 'clamp(150px, 40vw, 250px)' }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                src={garisEmas} 
-                alt="Garis Emas" 
-                style={{
-                  marginBottom: '25px',
-                  height: 'auto',
-                  objectFit: 'contain'
-                }} 
-              />
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                style={{
-                  fontFamily: 'sans-serif',
-                  fontSize: 'clamp(16px, 5vw, 22px)',
-                  color: '#000',
-                  marginBottom: '50px',
-                  letterSpacing: '1px'
-                }}
-              >
-                06.00 PM - 09.00 PM
-              </motion.p>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.7, delay: 0.4 }}
-                style={{
-                  fontFamily: 'sans-serif',
-                  fontWeight: 600,
-                  fontSize: 'clamp(20px, 6vw, 28px)',
-                  letterSpacing: '5px',
-                  color: '#000',
-                  marginBottom: '20px',
-                  textAlign: 'center'
-                }}
-              >
-                COUNTDOWN
-              </motion.h2>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.7, delay: 0.5 }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 'clamp(8px, 2vw, 15px)',
-                  marginBottom: '40px',
-                  width: '100%'
-                }}
-              >
-                {[
-                  { label: 'Days', value: timeLeft.days },
-                  { label: 'Hours', value: timeLeft.hours },
-                  { label: 'Minutes', value: timeLeft.minutes },
-                  { label: 'Seconds', value: timeLeft.seconds }
-                ].map((item, index, arr) => (
-                  <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 2vw, 15px)' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: 'clamp(13px, 3.8vw, 17px)', fontWeight: 700, color: '#000' }}>{item.label}</span>
-                      <div style={{
-                        backgroundColor: '#2b3f5c',
-                        color: '#fff',
-                        borderRadius: '12px',
-                        padding: '10px 8px',
-                        minWidth: 'clamp(45px, 12vw, 55px)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 'clamp(20px, 6vw, 26px)',
-                        fontWeight: 700,
-                        boxShadow: '0 4px 10px rgba(0,0,0,0.15)'
-                      }}>
-                        {String(item.value).padStart(2, '0')}
-                      </div>
-                    </div>
-                    {index < arr.length - 1 && (
-                      <span style={{ fontSize: 'clamp(20px, 6vw, 30px)', fontWeight: 700, color: '#000', transform: 'translateY(12px)' }}>:</span>
-                    )}
-                  </div>
-                ))}
-              </motion.div>
-
-              <motion.a
-                href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=The+Wedding+of+Dhani+%26+Amanda&dates=20261207T110000Z/20261207T140000Z&details=Dengan+memohon+rahmat+dan+ridho+Allah+SWT,+kami+mengundang+Bapak/Ibu/Saudara/i+untuk+menghadiri+acara+pernikahan+kami.&location=RM.+Kaliurang+Malang"
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '12px',
-                  backgroundColor: '#2b3f5c',
-                  color: '#fff',
-                  padding: '8px 24px',
-                  borderRadius: '30px',
-                  textDecoration: 'none',
-                  boxShadow: '0 6px 15px rgba(43,63,92,0.3)',
-                  zIndex: 10
-                }}
-              >
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
-                  <span style={{ fontSize: '11px', fontWeight: 500 }}>Save to</span>
-                  <span style={{ fontSize: '14px', fontWeight: 700 }}>Calendar</span>
-                </div>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                  <line x1="8" y1="14" x2="8.01" y2="14"></line>
-                  <line x1="12" y1="14" x2="12.01" y2="14"></line>
-                  <line x1="16" y1="14" x2="16.01" y2="14"></line>
-                  <line x1="8" y1="18" x2="8.01" y2="18"></line>
-                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
-                  <line x1="16" y1="18" x2="16.01" y2="18"></line>
-                </svg>
-              </motion.a>
-
-              {/* JAM IMAGE */}
-              <motion.img
-                initial={{ opacity: 0, x: -30, y: 30 }}
-                whileInView={{ opacity: 1, x: 0, y: 0 }}
-                viewport={{ once: false, amount: 0.1 }}
-                transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
-                src={jam}
-                alt="Jam"
-                style={{
-                  position: 'absolute',
-                  bottom: -15,
-                  left: -15,
-                  width: 'clamp(140px, 45vw, 220px)',
-                  zIndex: 5,
-                  pointerEvents: 'none'
-                }}
-              />
             </div>
 
           </motion.div>
