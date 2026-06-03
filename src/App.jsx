@@ -42,10 +42,20 @@ export default function App() {
   const [showCard, setShowCard] = useState(false);
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
   const [isPlaying, setIsPlaying] = useState(false);
+  const [guestName, setGuestName] = useState('');
   const audioRef = useRef(null);
 
   const targetDate = new Date('2026-12-07T18:00:00').getTime();
   const [timeLeft, setTimeLeft] = useState({ days: 6, hours: 6, minutes: 6, seconds: 6 });
+
+  useEffect(() => {
+    // Ambil parameter dari URL, contoh: ?to=Budi+Santoso
+    const params = new URLSearchParams(window.location.search);
+    const to = params.get('to');
+    if (to) {
+      setGuestName(to);
+    }
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -301,6 +311,42 @@ export default function App() {
                       </motion.div>
                     </motion.div>
                   </div>
+
+                  {/* GUEST NAME (Dipindahkan ke dalam amplop agar ikut bergerak dan posisinya pas) */}
+                  <motion.div
+                    animate={isOpened ? { opacity: 0 } : { opacity: 1 }}
+                    style={{
+                      position: 'absolute',
+                      bottom: '8%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      textAlign: 'center',
+                      zIndex: 35, // Di atas elemen amplop lainnya
+                      pointerEvents: 'none',
+                      width: '100%',
+                    }}
+                  >
+                    <p style={{
+                      fontFamily: "'Playfair Display', serif",
+                      fontSize: 12,
+                      color: '#e0e0e0',
+                      marginBottom: 2,
+                      opacity: 0.9,
+                      letterSpacing: '1px'
+                    }}>
+                      Kepada Yth.
+                    </p>
+                    <p style={{
+                      fontFamily: "'Playfair Display', serif",
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: '#fdfdfc',
+                      textShadow: '0 2px 4px rgba(0,0,0,0.6)',
+                      whiteSpace: 'nowrap',
+                    }}>
+                      {guestName || 'Bapak/Ibu/Saudara/i'}
+                    </p>
+                  </motion.div>
 
                   {/* Ornamen bunga amplop */}
                   <img src={bunga1} alt="" style={{
