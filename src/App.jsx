@@ -18,8 +18,8 @@ import cincin from './assets/cincin.webp';
 import bunga9 from './assets/bunga-9.webp';
 import bunga10 from './assets/bunga-10.webp';
 import bunga11 from './assets/bunga-11.webp';
-import dhaniSolo from './assets/dhani-solo.jpeg';
-import amandaSolo from './assets/amanda-solo.jpeg';
+import dhaniSolo from './assets/dhani-solo.webp';
+import amandaSolo from './assets/amanda-solo.webp';
 import bunga12 from './assets/bunga-12.webp';
 import bunga13 from './assets/bunga-13.webp';
 import castleImg from './assets/castle.webp';
@@ -37,18 +37,18 @@ import bunga3 from './assets/bunga-3.webp';
 import bunga4 from './assets/bunga-4.webp';
 import butterflyImg from './assets/butterfly.webp';
 import bg6 from './assets/bg-6.webp';
-import bg7 from './assets/bg-7.png';
-import bg8 from './assets/bg-8.png';
-import arrowImg from './assets/arrow.png';
-import gal1 from './assets/gallery/1.jpeg';
-import gal2 from './assets/gallery/2.jpeg';
-import gal3 from './assets/gallery/3.jpeg';
-import gal4 from './assets/gallery/4.jpeg';
-import gal5 from './assets/gallery/5.jpeg';
-import gal6 from './assets/gallery/6.png';
-import gal7 from './assets/gallery/7.png';
-import gal8 from './assets/gallery/8.png';
-import gal9 from './assets/gallery/9.png';
+import bg7 from './assets/bg-7.webp';
+import bg8 from './assets/bg-8.webp';
+import arrowImg from './assets/arrow.webp';
+import gal1 from './assets/gallery/1.webp';
+import gal2 from './assets/gallery/2.webp';
+import gal3 from './assets/gallery/3.webp';
+import gal4 from './assets/gallery/4.webp';
+import gal5 from './assets/gallery/5.webp';
+import gal6 from './assets/gallery/6.webp';
+import gal7 from './assets/gallery/7.webp';
+import gal8 from './assets/gallery/8.webp';
+import gal9 from './assets/gallery/9.webp';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -65,7 +65,7 @@ export default function App() {
   const [wishForm, setWishForm] = useState({ nama: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
-  
+
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz02lWlLwvmoflqCq0JVjkyVXjxrO0DxvXaWa41Nfx4L5NriuXS5G9RtRcUetTcdsf6/exec';
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [comments, setComments] = useState([]);
@@ -89,16 +89,16 @@ export default function App() {
   const handleWishSubmit = async (e) => {
     e.preventDefault();
     if (!wishForm.nama || !wishForm.message) return;
-    
+
     setIsSubmitting(true);
     setSubmitStatus('');
-    
+
     try {
       await fetch(SCRIPT_URL, {
         method: 'POST',
         body: JSON.stringify({ nama: wishForm.nama, message: wishForm.message }),
       });
-      
+
       setSubmitStatus('success');
       // Optimistic update
       setComments([{ nama: wishForm.nama, message: wishForm.message, date: "Baru saja" }, ...comments]);
@@ -1685,7 +1685,7 @@ export default function App() {
                 </motion.div>
 
                 {/* CAROUSEL */}
-                <div 
+                <div
                   onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
@@ -1705,7 +1705,7 @@ export default function App() {
                     let offset = idx - currentSlide;
                     if (offset > galleryImages.length / 2) offset -= galleryImages.length;
                     if (offset < -galleryImages.length / 2) offset += galleryImages.length;
-                    
+
                     const isCenter = offset === 0;
                     const isLeft = offset === -1;
                     const isRight = offset === 1;
@@ -1738,9 +1738,9 @@ export default function App() {
                         }}
                       >
                         <div style={{
-                          position: 'absolute', inset: 0, 
-                          backgroundColor: '#000', 
-                          opacity: isCenter ? 0 : 0.3, 
+                          position: 'absolute', inset: 0,
+                          backgroundColor: '#000',
+                          opacity: isCenter ? 0 : 0.3,
                           transition: 'opacity 0.6s ease',
                           zIndex: 2,
                           pointerEvents: 'none',
@@ -1795,7 +1795,7 @@ export default function App() {
                 {/* FLOWERS */}
                 <img src={bunga8} alt="" style={{ position: 'absolute', top: '-5%', left: '-20%', width: 'clamp(150px, 40vw, 250px)', opacity: 0.8, transform: 'rotate(-15deg)', pointerEvents: 'none', zIndex: 1 }} />
                 <img src={bunga5} alt="" style={{ position: 'absolute', top: '-5%', right: '-5%', width: 'clamp(120px, 35vw, 200px)', opacity: 0.7, transform: 'rotate(25deg) scaleX(-1)', pointerEvents: 'none', zIndex: 1 }} />
-                
+
                 {/* <img src={bunga3} alt="" style={{ position: 'absolute', bottom: '-5%', right: '-10%', width: 'clamp(150px, 40vw, 250px)', opacity: 0.8, transform: 'rotate(15deg)', pointerEvents: 'none', zIndex: 1 }} />
                 <img src={bunga6} alt="" style={{ position: 'absolute', bottom: '5%', left: '-10%', width: 'clamp(120px, 35vw, 200px)', opacity: 0.7, transform: 'rotate(-20deg)', pointerEvents: 'none', zIndex: 1 }} /> */}
 
@@ -1956,7 +1956,7 @@ export default function App() {
                           <div style={{ fontSize: '12px', color: '#444', marginTop: '4px', fontStyle: 'italic' }}>&quot;{c.message}&quot;</div>
                         </div>
                       ))}
-                      
+
                       {comments.length > 3 && (
                         <button
                           onClick={() => setShowCommentModal(true)}
@@ -2036,15 +2036,15 @@ export default function App() {
                           fontFamily: "'Playfair Display', serif",
                           zIndex: 1,
                         }}>
-                          <h3 style={{ 
-                            textAlign: 'center', 
-                            color: '#2b3f5c', 
-                            marginBottom: '25px', 
-                            fontSize: '32px', 
+                          <h3 style={{
+                            textAlign: 'center',
+                            color: '#2b3f5c',
+                            marginBottom: '25px',
+                            fontSize: '32px',
                             fontFamily: "'Rouge Script', cursive",
                             textShadow: '1px 1px 2px rgba(0,0,0,0.1)'
                           }}>Daftar Ucapan</h3>
-                          
+
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                             {comments.map((c, i) => (
                               <div key={i} style={{ paddingBottom: '15px', borderBottom: i < comments.length - 1 ? '1px dashed rgba(212, 192, 140, 0.5)' : 'none' }}>
@@ -2054,17 +2054,17 @@ export default function App() {
                               </div>
                             ))}
                           </div>
-                          
-                          <button 
-                            onClick={() => setShowCommentModal(false)} 
-                            style={{ 
-                              position: 'absolute', 
-                              top: '10px', 
-                              right: '15px', 
-                              background: 'none', 
-                              border: 'none', 
-                              fontSize: '28px', 
-                              cursor: 'pointer', 
+
+                          <button
+                            onClick={() => setShowCommentModal(false)}
+                            style={{
+                              position: 'absolute',
+                              top: '10px',
+                              right: '15px',
+                              background: 'none',
+                              border: 'none',
+                              fontSize: '28px',
+                              cursor: 'pointer',
                               color: '#2b3f5c',
                               lineHeight: 1
                             }}

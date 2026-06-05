@@ -24,7 +24,7 @@ Order: `npm run lint && npm run build` before committing.
 - **Styling**: inline styles + Framer Motion `style` props (no Tailwind utility classes used in components)
 - **Fonts**: Playfair Display + Mea Culpa (Google Fonts, loaded in `index.css`)
 - **Static assets** in `public/` → only favicon.svg & icons.svg (served as `/filename`)
-- **App images** in `src/assets/` (bunga-1.png, bunga-2.png, bunga-3.png, couple.png, stamp.png, ayat.png) → imported in JSX with ES import
+- **App images** in `src/assets/` (bunga-1.webp, bunga-2.webp, bunga-3.webp, couple.webp, stamp.webp, ayat.webp) → imported in JSX with ES import
 
 ## Mobile layout notes
 - Envelope dimensions: `width: min(90vw, 400px)`, aspect ratio ~0.72
