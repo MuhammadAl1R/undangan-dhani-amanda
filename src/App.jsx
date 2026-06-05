@@ -34,9 +34,11 @@ import bunga15 from './assets/bunga-15.webp';
 import bunga14 from './assets/bunga-14.webp';
 import blueLine from './assets/blue-line.webp';
 import bunga3 from './assets/bunga-3.webp';
+import bunga4 from './assets/bunga-4.webp';
 import butterflyImg from './assets/butterfly.webp';
 import bg6 from './assets/bg-6.webp';
 import bg7 from './assets/bg-7.png';
+import bg8 from './assets/bg-8.png';
 import arrowImg from './assets/arrow.png';
 import gal1 from './assets/gallery/1.jpeg';
 import gal2 from './assets/gallery/2.jpeg';
@@ -58,6 +60,57 @@ export default function App() {
 
   const targetDate = new Date('2026-12-07T18:00:00').getTime();
   const [timeLeft, setTimeLeft] = useState({ days: 6, hours: 6, minutes: 6, seconds: 6 });
+
+  // Wishes form state
+  const [wishForm, setWishForm] = useState({ nama: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState('');
+  
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz02lWlLwvmoflqCq0JVjkyVXjxrO0DxvXaWa41Nfx4L5NriuXS5G9RtRcUetTcdsf6/exec';
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [isLoadingComments, setIsLoadingComments] = useState(true);
+
+  const fetchComments = async () => {
+    try {
+      setIsLoadingComments(true);
+      const res = await fetch(`${SCRIPT_URL}?t=${Date.now()}`);
+      const json = await res.json();
+      if (json.result === 'success' && json.data) {
+        setComments(json.data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch comments:', err);
+    } finally {
+      setIsLoadingComments(false);
+    }
+  };
+
+  const handleWishSubmit = async (e) => {
+    e.preventDefault();
+    if (!wishForm.nama || !wishForm.message) return;
+    
+    setIsSubmitting(true);
+    setSubmitStatus('');
+    
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ nama: wishForm.nama, message: wishForm.message }),
+      });
+      
+      setSubmitStatus('success');
+      // Optimistic update
+      setComments([{ nama: wishForm.nama, message: wishForm.message, date: "Baru saja" }, ...comments]);
+      setWishForm(prev => ({ ...prev, message: '' }));
+      setTimeout(() => setSubmitStatus(''), 4000);
+    } catch (err) {
+      console.error(err);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // Gallery state
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -87,11 +140,14 @@ export default function App() {
   };
 
   useEffect(() => {
+    fetchComments();
+
     // Ambil parameter dari URL, contoh: ?to=Budi+Santoso
     const params = new URLSearchParams(window.location.search);
     const to = params.get('to');
     if (to) {
       setGuestName(to);
+      setWishForm(prev => ({ ...prev, nama: to }));
     }
   }, []);
 
@@ -981,7 +1037,7 @@ export default function App() {
                     transition={{ duration: 0.85, ease: "easeOut", delay: 0.25 }}
                     style={{
                       position: 'absolute',
-                      top: '6%',
+                      top: '-5%',
                       left: '40%',
                       transform: 'translate(-50%, -50%)',
                       zIndex: 15,
@@ -1717,7 +1773,312 @@ export default function App() {
                 </div>
               </div>
 
-              {/* ===== SECTION 7: CLOSING ===== */}
+              {/* ===== SECTION 7: WISHES ===== */}
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                minHeight: '100vh',
+                overflow: 'hidden',
+                scrollSnapAlign: 'center',
+                scrollSnapStop: 'always',
+                backgroundImage: `url(${bg8})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                paddingTop: '6vh',
+                paddingBottom: '4vh',
+                boxSizing: 'border-box',
+              }}>
+                {/* FLOWERS */}
+                <img src={bunga8} alt="" style={{ position: 'absolute', top: '-5%', left: '-20%', width: 'clamp(150px, 40vw, 250px)', opacity: 0.8, transform: 'rotate(-15deg)', pointerEvents: 'none', zIndex: 1 }} />
+                <img src={bunga5} alt="" style={{ position: 'absolute', top: '-5%', right: '-5%', width: 'clamp(120px, 35vw, 200px)', opacity: 0.7, transform: 'rotate(25deg) scaleX(-1)', pointerEvents: 'none', zIndex: 1 }} />
+                
+                {/* <img src={bunga3} alt="" style={{ position: 'absolute', bottom: '-5%', right: '-10%', width: 'clamp(150px, 40vw, 250px)', opacity: 0.8, transform: 'rotate(15deg)', pointerEvents: 'none', zIndex: 1 }} />
+                <img src={bunga6} alt="" style={{ position: 'absolute', bottom: '5%', left: '-10%', width: 'clamp(120px, 35vw, 200px)', opacity: 0.7, transform: 'rotate(-20deg)', pointerEvents: 'none', zIndex: 1 }} /> */}
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  transition={{ duration: 0.7 }}
+                  style={{ textAlign: 'center', marginBottom: '2vh', zIndex: 10, padding: '0 20px' }}
+                >
+                  <h2 style={{
+                    fontFamily: "'Rouge Script', cursive",
+                    fontWeight: 600,
+                    fontSize: 'clamp(32px, 10vw, 45px)',
+                    color: '#2b3f5c',
+                    margin: '0 0 5px 0',
+                    textShadow: '0 2px 4px rgba(255,255,255,0.6)',
+                  }}>Pesan &amp; Doa</h2>
+                  <p style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: 'clamp(12px, 3.5vw, 14px)',
+                    fontWeight: 700,
+                    fontStyle: 'italic',
+                    color: '#555',
+                    maxWidth: '340px',
+                    margin: '0 auto',
+                    lineHeight: 1.5,
+                  }}>
+                    Tuliskan pesan dan doa terbaik Anda.
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                  style={{
+                    width: '85%',
+                    maxWidth: '400px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.65)',
+                    backdropFilter: 'blur(10px)',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+                    zIndex: 10,
+                    marginBottom: '3vh',
+                  }}
+                >
+                  <form onSubmit={handleWishSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Nama Anda"
+                        value={wishForm.nama}
+                        onChange={(e) => setWishForm({ ...wishForm, nama: e.target.value })}
+                        required
+                        readOnly={!!guestName}
+                        style={{
+                          width: '100%',
+                          padding: '10px 15px',
+                          borderRadius: '8px',
+                          border: '1px solid #d4c08c',
+                          backgroundColor: guestName ? 'rgba(230, 230, 230, 0.8)' : 'rgba(255,255,255,0.8)',
+                          fontFamily: "'Playfair Display', serif",
+                          fontSize: '14px',
+                          color: guestName ? '#666' : '#2b3f5c',
+                          boxSizing: 'border-box',
+                          outline: 'none',
+                          cursor: guestName ? 'not-allowed' : 'text',
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <textarea
+                        placeholder="Tulis pesan & doa..."
+                        value={wishForm.message}
+                        onChange={(e) => setWishForm({ ...wishForm, message: e.target.value })}
+                        required
+                        rows="3"
+                        style={{
+                          width: '100%',
+                          padding: '10px 15px',
+                          borderRadius: '8px',
+                          border: '1px solid #d4c08c',
+                          backgroundColor: 'rgba(255,255,255,0.8)',
+                          fontFamily: "'Playfair Display', serif",
+                          fontSize: '14px',
+                          color: '#2b3f5c',
+                          boxSizing: 'border-box',
+                          outline: 'none',
+                          resize: 'none',
+                        }}
+                      ></textarea>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      style={{
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: 'none',
+                        backgroundColor: '#d4c08c',
+                        color: '#1b2b4a',
+                        fontFamily: "'Playfair Display', serif",
+                        fontWeight: 700,
+                        fontSize: '14px',
+                        cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                        opacity: isSubmitting ? 0.7 : 1,
+                        transition: 'all 0.3s',
+                      }}
+                    >
+                      {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
+                    </button>
+                    {submitStatus === 'success' && (
+                      <p style={{ margin: '5px 0 0 0', textAlign: 'center', color: '#1b2b4a', fontSize: '13px', fontWeight: 600 }}>
+                        Terima kasih atas doa dan pesan Anda!
+                      </p>
+                    )}
+                  </form>
+                </motion.div>
+
+                {/* RECENT COMMENTS */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                  style={{
+                    width: '85%',
+                    maxWidth: '400px',
+                    zIndex: 10,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px'
+                  }}
+                >
+                  {isLoadingComments ? (
+                    <div style={{ textAlign: 'center', color: '#555', fontSize: '13px', fontStyle: 'italic', fontFamily: "'Playfair Display', serif" }}>
+                      Memuat ucapan...
+                    </div>
+                  ) : comments.length === 0 ? (
+                    <div style={{ textAlign: 'center', color: '#555', fontSize: '13px', fontStyle: 'italic', fontFamily: "'Playfair Display', serif" }}>
+                      Belum ada ucapan. Jadilah yang pertama!
+                    </div>
+                  ) : (
+                    <>
+                      {comments.slice(0, 3).map((c, i) => (
+                        <div key={i} style={{
+                          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                          backdropFilter: 'blur(5px)',
+                          borderRadius: '12px',
+                          padding: '12px 15px',
+                          boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                          borderLeft: '4px solid #d4c08c'
+                        }}>
+                          <div style={{ fontWeight: 'bold', color: '#2b3f5c', fontSize: '13px', fontFamily: "'Playfair Display', serif" }}>{c.nama}</div>
+                          <div style={{ fontSize: '12px', color: '#444', marginTop: '4px', fontStyle: 'italic' }}>&quot;{c.message}&quot;</div>
+                        </div>
+                      ))}
+                      
+                      {comments.length > 3 && (
+                        <button
+                          onClick={() => setShowCommentModal(true)}
+                          style={{
+                            marginTop: '10px',
+                            background: 'none',
+                            border: '1px solid #2b3f5c',
+                            borderRadius: '20px',
+                            padding: '8px 15px',
+                            color: '#2b3f5c',
+                            fontFamily: "'Playfair Display', serif",
+                            fontSize: '13px',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            alignSelf: 'center',
+                            transition: 'all 0.3s',
+                          }}
+                        >
+                          Lihat Semua Ucapan ({comments.length})
+                        </button>
+                      )}
+                    </>
+                  )}
+                </motion.div>
+
+                {/* MODAL KERTAS BUKU TAMU */}
+                <AnimatePresence>
+                  {showCommentModal && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setShowCommentModal(false)}
+                      style={{
+                        position: 'fixed',
+                        inset: 0,
+                        backgroundColor: 'rgba(0,0,0,0.6)',
+                        zIndex: 100,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '20px',
+                      }}
+                    >
+                      <motion.div
+                        initial={{ y: 50, scale: 0.9, rotate: -2 }}
+                        animate={{ y: 0, scale: 1, rotate: 0 }}
+                        exit={{ y: 50, scale: 0.9, opacity: 0 }}
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          position: 'relative',
+                          width: '100%',
+                          maxWidth: '450px',
+                          maxHeight: '75vh',
+                        }}
+                      >
+                        <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+                          <filter id="paper-tear">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.04" result="noise" />
+                            <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+                          </filter>
+                        </svg>
+
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          backgroundColor: '#fffcf0', // warna kertas vintage
+                          boxShadow: 'inset 0 0 30px rgba(212, 192, 140, 0.4), 0 10px 30px rgba(0,0,0,0.3)',
+                          filter: 'url(#paper-tear)',
+                        }} />
+
+                        <div style={{
+                          position: 'relative',
+                          padding: '40px 25px 25px 25px',
+                          maxHeight: '75vh',
+                          overflowY: 'auto',
+                          fontFamily: "'Playfair Display', serif",
+                          zIndex: 1,
+                        }}>
+                          <h3 style={{ 
+                            textAlign: 'center', 
+                            color: '#2b3f5c', 
+                            marginBottom: '25px', 
+                            fontSize: '32px', 
+                            fontFamily: "'Rouge Script', cursive",
+                            textShadow: '1px 1px 2px rgba(0,0,0,0.1)'
+                          }}>Daftar Ucapan</h3>
+                          
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                            {comments.map((c, i) => (
+                              <div key={i} style={{ paddingBottom: '15px', borderBottom: i < comments.length - 1 ? '1px dashed rgba(212, 192, 140, 0.5)' : 'none' }}>
+                                <div style={{ fontWeight: 700, color: '#1b2b4a', fontSize: '15px' }}>{c.nama}</div>
+                                <div style={{ fontSize: '14px', color: '#333', marginTop: '6px', lineHeight: 1.6 }}>{c.message}</div>
+                                <div style={{ fontSize: '11px', color: '#888', marginTop: '6px', textTransform: 'uppercase', letterSpacing: '1px' }}>{c.date}</div>
+                              </div>
+                            ))}
+                          </div>
+                          
+                          <button 
+                            onClick={() => setShowCommentModal(false)} 
+                            style={{ 
+                              position: 'absolute', 
+                              top: '10px', 
+                              right: '15px', 
+                              background: 'none', 
+                              border: 'none', 
+                              fontSize: '28px', 
+                              cursor: 'pointer', 
+                              color: '#2b3f5c',
+                              lineHeight: 1
+                            }}
+                          >
+                            &times;
+                          </button>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ===== SECTION 8: CLOSING ===== */}
               <div style={{
                 position: 'relative',
                 width: '100%',
