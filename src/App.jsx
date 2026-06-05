@@ -18,8 +18,8 @@ import cincin from './assets/cincin.webp';
 import bunga9 from './assets/bunga-9.webp';
 import bunga10 from './assets/bunga-10.webp';
 import bunga11 from './assets/bunga-11.webp';
-import dhaniTrans from './assets/Dhani-trans.webp';
-import amandaTrans from './assets/amanda-trans.webp';
+import dhaniSolo from './assets/dhani-solo.jpeg';
+import amandaSolo from './assets/amanda-solo.jpeg';
 import bunga12 from './assets/bunga-12.webp';
 import bunga13 from './assets/bunga-13.webp';
 import castleImg from './assets/castle.webp';
@@ -36,6 +36,17 @@ import blueLine from './assets/blue-line.webp';
 import bunga3 from './assets/bunga-3.webp';
 import butterflyImg from './assets/butterfly.webp';
 import bg6 from './assets/bg-6.webp';
+import bg7 from './assets/bg-7.png';
+import arrowImg from './assets/arrow.png';
+import gal1 from './assets/gallery/1.jpeg';
+import gal2 from './assets/gallery/2.jpeg';
+import gal3 from './assets/gallery/3.jpeg';
+import gal4 from './assets/gallery/4.jpeg';
+import gal5 from './assets/gallery/5.jpeg';
+import gal6 from './assets/gallery/6.png';
+import gal7 from './assets/gallery/7.png';
+import gal8 from './assets/gallery/8.png';
+import gal9 from './assets/gallery/9.png';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
@@ -47,6 +58,33 @@ export default function App() {
 
   const targetDate = new Date('2026-12-07T18:00:00').getTime();
   const [timeLeft, setTimeLeft] = useState({ days: 6, hours: 6, minutes: 6, seconds: 6 });
+
+  // Gallery state
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const galleryImages = [gal1, gal2, gal3, gal4, gal5, gal6, gal7, gal8, gal9];
+  const nextSlide = () => setCurrentSlide((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1));
+  const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    if (distance > 50) {
+      nextSlide();
+    } else if (distance < -50) {
+      prevSlide();
+    }
+    touchStartX.current = 0;
+    touchEndX.current = 0;
+  };
 
   useEffect(() => {
     // Ambil parameter dari URL, contoh: ?to=Budi+Santoso
@@ -976,66 +1014,26 @@ export default function App() {
                     transition={{ duration: 0.85, ease: "easeOut" }}
                     style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
                   >
-                    {/* Photo container for pop-out effect */}
+                    {/* Photo container */}
                     <div style={{
                       position: 'relative',
                       width: '100%',
                       maxWidth: '240px',
-                      aspectRatio: '1 / 1.45',
+                      aspectRatio: '1 / 1.25',
                       marginBottom: 15,
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                      overflow: 'hidden',
+                      backgroundColor: '#e8ebed',
                     }}>
-                      {/* Shadow box decoration behind the photo */}
-                      <div style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
+                      <img src={dhaniSolo} alt="Groom" style={{
                         width: '100%',
-                        height: '88%',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                        zIndex: 0,
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'top',
+                        transform: 'scale(1.35)',
+                        transformOrigin: 'center 15%',
                       }} />
-
-                      {/* Background image container (Cropped Box) */}
-                      <div style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '88%',
-                        overflow: 'hidden',
-                        borderRadius: '8px',
-                        backgroundColor: '#e8ebed',
-                        zIndex: 1,
-                      }}>
-                        <img src={dhaniTrans} alt="Groom Background" style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          objectPosition: 'top',
-                          transform: 'scale(1.21) translateY(-5%)',
-                        }} />
-                      </div>
-
-                      {/* Transparent Popout container (Uncropped) */}
-                      <div style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '88%',
-                        overflow: 'visible',
-                        zIndex: 2,
-                        pointerEvents: 'none',
-                      }}>
-                        <img src={dhaniTrans} alt="Groom Popout" style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          objectPosition: 'top',
-                          transform: 'scale(1.21) translateY(-5%)',
-                        }} />
-                      </div>
                     </div>
                     <h3 style={{ fontFamily: "'Engagement', cursive", fontSize: 'clamp(26px, 7vw, 36px)', color: '#2b3f5c', margin: '0 0 5px 0', lineHeight: 1.1 }}>Iman Hadi<br />Ramadhani, S.T.</h3>
                     <p style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 'clamp(9px, 2.3vw, 11px)', color: '#555', margin: 0, lineHeight: 1.4 }}>
@@ -1051,66 +1049,26 @@ export default function App() {
                     transition={{ duration: 0.85, ease: "easeOut" }}
                     style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
                   >
-                    {/* Photo container for pop-out effect */}
+                    {/* Photo container */}
                     <div style={{
                       position: 'relative',
                       width: '100%',
                       maxWidth: '240px',
-                      aspectRatio: '1 / 1.45',
+                      aspectRatio: '1 / 1.25',
                       marginBottom: 15,
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                      overflow: 'hidden',
+                      backgroundColor: '#e8ebed',
                     }}>
-                      {/* Shadow box decoration behind the photo */}
-                      <div style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
+                      <img src={amandaSolo} alt="Bride" style={{
                         width: '100%',
-                        height: '88%',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                        zIndex: 0,
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'top',
+                        transform: 'scale(1.35)',
+                        transformOrigin: 'center 15%',
                       }} />
-
-                      {/* Background image container (Cropped Box) */}
-                      <div style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '88%',
-                        overflow: 'hidden',
-                        borderRadius: '8px',
-                        backgroundColor: '#e8ebed',
-                        zIndex: 1,
-                      }}>
-                        <img src={amandaTrans} alt="Bride Background" style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          objectPosition: 'top',
-                          transform: 'scale(1.1) translateY(-2%)',
-                        }} />
-                      </div>
-
-                      {/* Transparent Popout container (Uncropped) */}
-                      <div style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '88%',
-                        overflow: 'visible',
-                        zIndex: 2,
-                        pointerEvents: 'none',
-                      }}>
-                        <img src={amandaTrans} alt="Bride Popout" style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          objectPosition: 'top',
-                          transform: 'scale(1.1) translateY(-2%)',
-                        }} />
-                      </div>
                     </div>
                     <h3 style={{ fontFamily: "'Engagement', cursive", fontSize: 'clamp(26px, 7vw, 36px)', color: '#2b3f5c', margin: '0 0 5px 0', lineHeight: 1.1 }}>Amanda Febiola Danu<br />Garini, S.T.</h3>
                     <p style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 'clamp(9px, 2.3vw, 11px)', color: '#555', margin: 0, lineHeight: 1.4 }}>
@@ -1622,7 +1580,144 @@ export default function App() {
                 </div>
               </div>
 
-              {/* ===== SECTION 6: CLOSING ===== */}
+              {/* ===== SECTION 6: OUR GALLERY ===== */}
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                minHeight: '100vh',
+                overflow: 'hidden',
+                scrollSnapAlign: 'center',
+                scrollSnapStop: 'always',
+                backgroundImage: `url(${bg7})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingTop: '6vh',
+                paddingBottom: '4vh',
+                boxSizing: 'border-box',
+              }}>
+                {/* TITLE & QUOTE */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  transition={{ duration: 0.7 }}
+                  style={{ textAlign: 'center', marginBottom: '4vh', zIndex: 10, padding: '0 20px' }}
+                >
+                  <h2 style={{
+                    fontFamily: "'Rouge Script', cursive",
+                    fontSize: 'clamp(40px, 12vw, 60px)',
+                    color: '#2b3f5c',
+                    margin: '0 0 15px 0',
+                    textShadow: '0 2px 4px rgba(255,255,255,0.6)',
+                  }}>Our Gallery</h2>
+                  <p style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: 'clamp(12px, 3.5vw, 15px)',
+                    fontWeight: 700,
+                    fontStyle: 'italic',
+                    color: '#2b3f5c',
+                    maxWidth: '340px',
+                    margin: '0 auto',
+                    lineHeight: 1.6,
+                  }}>
+                    &quot;Pictures are the diary we can always open, letting us reread the happiest chapters of our lives whenever we miss them.&quot;
+                  </p>
+                </motion.div>
+
+                {/* CAROUSEL */}
+                <div 
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: '500px',
+                    height: '45vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '4vh',
+                    zIndex: 10,
+                  }}
+                >
+                  {galleryImages.map((img, idx) => {
+                    let offset = idx - currentSlide;
+                    if (offset > galleryImages.length / 2) offset -= galleryImages.length;
+                    if (offset < -galleryImages.length / 2) offset += galleryImages.length;
+                    
+                    const isCenter = offset === 0;
+                    const isLeft = offset === -1;
+                    const isRight = offset === 1;
+                    const isHidden = Math.abs(offset) > 1;
+
+                    return (
+                      <motion.div
+                        key={idx}
+                        animate={{
+                          x: isCenter ? '-50%' : isLeft ? '-110%' : isRight ? '10%' : offset < 0 ? '-150%' : '50%',
+                          scale: isCenter ? 1 : 0.7,
+                          opacity: isCenter ? 1 : isHidden ? 0 : 0.4,
+                          zIndex: isCenter ? 5 : isHidden ? 0 : 1,
+                        }}
+                        transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+                        style={{
+                          position: 'absolute',
+                          left: '50%',
+                          width: '65%',
+                          height: '100%',
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          boxShadow: '0 8px 25px rgba(0,0,0,0.4)',
+                          pointerEvents: isHidden ? 'none' : 'auto',
+                          cursor: isCenter ? 'default' : 'pointer',
+                        }}
+                        onClick={() => {
+                          if (isLeft) prevSlide();
+                          if (isRight) nextSlide();
+                        }}
+                      >
+                        <div style={{
+                          position: 'absolute', inset: 0, 
+                          backgroundColor: '#000', 
+                          opacity: isCenter ? 0 : 0.3, 
+                          transition: 'opacity 0.6s ease',
+                          zIndex: 2,
+                          pointerEvents: 'none',
+                        }} />
+                        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                {/* PAGINATION DOTS */}
+                <div style={{ display: 'flex', gap: '8px', zIndex: 10, alignItems: 'center' }}>
+                  {galleryImages.map((_, idx) => (
+                    <div key={idx} style={{
+                      width: currentSlide === idx ? '10px' : '8px',
+                      height: currentSlide === idx ? '10px' : '8px',
+                      borderRadius: '50%',
+                      backgroundColor: currentSlide === idx ? '#b89947' : '#d4c08c',
+                      transition: 'all 0.3s',
+                      opacity: currentSlide === idx ? 1 : 0.6,
+                    }} />
+                  ))}
+                </div>
+
+                {/* ARROWS */}
+                <div style={{ position: 'relative', width: '140px', zIndex: 10 }}>
+                  <img src={arrowImg} alt="arrows" style={{ width: '100%', height: '300%', objectFit: 'contain' }} />
+                  <div onClick={prevSlide} style={{ position: 'absolute', top: 0, left: 0, width: '50%', height: '100%', cursor: 'pointer' }} />
+                  <div onClick={nextSlide} style={{ position: 'absolute', top: 0, right: 0, width: '50%', height: '100%', cursor: 'pointer' }} />
+                </div>
+              </div>
+
+              {/* ===== SECTION 7: CLOSING ===== */}
               <div style={{
                 position: 'relative',
                 width: '100%',
