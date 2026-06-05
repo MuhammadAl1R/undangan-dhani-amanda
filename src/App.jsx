@@ -1091,7 +1091,7 @@ export default function App() {
                         transformOrigin: 'center 15%',
                       }} />
                     </div>
-                    <h3 style={{ fontFamily: "'Engagement', cursive", fontSize: 'clamp(26px, 7vw, 36px)', color: '#2b3f5c', margin: '0 0 5px 0', lineHeight: 1.1 }}>Iman Hadi<br />Ramadhani, S.T.</h3>
+                    <h3 style={{ fontFamily: "'Parisienne', cursive", fontSize: 'clamp(26px, 7vw, 36px)', color: '#2b3f5c', margin: '0 0 5px 0', lineHeight: 1.1, letterSpacing: '-1px', fontWeight:600 }}>Iman Hadi<br />Ramadhani, S.T.</h3>
                     <p style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 'clamp(9px, 2.3vw, 11px)', color: '#555', margin: 0, lineHeight: 1.4 }}>
                       Putra Pertama Bapak Eko Hadi Susanto dan Ibu Andriani Kasih. S.Pd.
                     </p>
@@ -1126,7 +1126,7 @@ export default function App() {
                         transformOrigin: 'center 15%',
                       }} />
                     </div>
-                    <h3 style={{ fontFamily: "'Engagement', cursive", fontSize: 'clamp(26px, 7vw, 36px)', color: '#2b3f5c', margin: '0 0 5px 0', lineHeight: 1.1 }}>Amanda Febiola Danu<br />Garini, S.T.</h3>
+                    <h3 style={{ fontFamily: "'Parisienne', cursive", fontWeight: 600,fontSize: 'clamp(26px, 7vw, 36px)', color: '#2b3f5c', margin: '0 0 5px 0', lineHeight: 1.1, letterSpacing: '-1px' }}>Amanda Febiola Danu Garini, S.T.</h3>
                     <p style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 'clamp(9px, 2.3vw, 11px)', color: '#555', margin: 0, lineHeight: 1.4 }}>
                       Putri Pertama Bapak Agus Budiono (alm) dan Ibu Sri Danu
                     </p>
