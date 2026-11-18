@@ -45,10 +45,6 @@ import gal2 from './assets/gallery/2.webp';
 import gal3 from './assets/gallery/3.webp';
 import gal4 from './assets/gallery/4.webp';
 import gal5 from './assets/gallery/5.webp';
-import gal6 from './assets/gallery/6.webp';
-import gal7 from './assets/gallery/7.webp';
-import gal8 from './assets/gallery/8.webp';
-import gal9 from './assets/gallery/9.webp';
 
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
