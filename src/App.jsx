@@ -846,7 +846,7 @@ export default function App() {
                     marginBottom: 'clamp(10px, 2vh, 16px)',
                     textShadow: '0 2px 4px rgba(0,0,0,0.5)',
                   }}>
-                    &quot;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepada angin/nya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.&quot;
+                    &quot;And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.&quot;
                   </p>
                 </motion.div>
 
@@ -1468,7 +1468,7 @@ export default function App() {
                       marginBottom: '20px',
                     }}
                   >
-                    Place of Our Wedding
+                    Tempat Resepsi Pernikahan
                   </motion.p>
 
                   <motion.h3
@@ -1665,7 +1665,7 @@ export default function App() {
                     color: '#2b3f5c',
                     margin: '0 0 15px 0',
                     textShadow: '0 2px 4px rgba(255,255,255,0.6)',
-                  }}>Our Gallery</h2>
+                  }}>Kenangan Kami</h2>
                   <p style={{
                     fontFamily: "'Playfair Display', serif",
                     fontSize: 'clamp(12px, 3.5vw, 15px)',
