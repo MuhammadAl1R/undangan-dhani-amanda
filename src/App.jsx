@@ -110,7 +110,7 @@ export default function App() {
 
   // Gallery state
   const [currentSlide, setCurrentSlide] = useState(0);
-  const galleryImages = [gal1, gal2, gal3, gal4, gal5, gal6, gal7, gal8, gal9];
+  const galleryImages = [gal1, gal2, gal3, gal4, gal5];
   const nextSlide = () => setCurrentSlide((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1));
   const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
 
