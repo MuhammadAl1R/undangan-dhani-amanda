@@ -846,7 +846,7 @@ export default function App() {
                     marginBottom: 'clamp(10px, 2vh, 16px)',
                     textShadow: '0 2px 4px rgba(0,0,0,0.5)',
                   }}>
-                    &quot;And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.&quot;
+                    &quot;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepada angin/nya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.&quot;
                   </p>
                 </motion.div>
 
@@ -1196,7 +1196,7 @@ export default function App() {
                     textAlign: 'center',
                   }}
                 >
-                  DATE &amp; TIME
+                  TANGGAL &amp; WAKTU 
                 </motion.h1>
 
                 <motion.div
