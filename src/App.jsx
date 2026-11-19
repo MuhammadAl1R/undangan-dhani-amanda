@@ -34,7 +34,6 @@ import bunga15 from './assets/bunga-15.webp';
 import bunga14 from './assets/bunga-14.webp';
 import blueLine from './assets/blue-line.webp';
 import bunga3 from './assets/bunga-3.webp';
-import bunga4 from './assets/bunga-4.webp';
 import butterflyImg from './assets/butterfly.webp';
 import bg6 from './assets/bg-6.webp';
 import bg7 from './assets/bg-7.webp';
@@ -46,41 +45,110 @@ import gal3 from './assets/gallery/3.webp';
 import gal4 from './assets/gallery/4.webp';
 import gal5 from './assets/gallery/5.webp';
 
+const TARGET_DATE = new Date('2026-12-07T18:00:00').getTime();
+
+const getInitialName = () => {
+  if (typeof window === 'undefined') return '';
+  const params = new URLSearchParams(window.location.search);
+  return params.get('to') || params.get('nama') || params.get('guest') || params.get('name') || '';
+};
+
 export default function App() {
   const [isOpened, setIsOpened] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
   const [isPlaying, setIsPlaying] = useState(false);
-  const [guestName, setGuestName] = useState('');
+  const [guestName] = useState(getInitialName);
   const audioRef = useRef(null);
 
-  const targetDate = new Date('2026-12-07T18:00:00').getTime();
   const [timeLeft, setTimeLeft] = useState({ days: 6, hours: 6, minutes: 6, seconds: 6 });
 
   // Wishes form state
-  const [wishForm, setWishForm] = useState({ nama: '', message: '' });
+  const [wishForm, setWishForm] = useState(() => ({ nama: getInitialName(), message: '' }));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
+
+  // Wedding Gift state
+  const [giftForm, setGiftForm] = useState(() => ({
+    bank: 'BCA',
+    nama: getInitialName(),
+    nominal: '',
+    message: '',
+  }));
+  const [copiedBank, setCopiedBank] = useState('');
+  const [showGiftModal, setShowGiftModal] = useState(false);
+
+  const handleCopyAccount = (number, bankName) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(number).catch(() => {
+        fallbackCopy(number);
+      });
+    } else {
+      fallbackCopy(number);
+    }
+    setCopiedBank(bankName);
+    setTimeout(() => setCopiedBank(''), 2500);
+  };
+
+  const fallbackCopy = (text) => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  };
+
+  const handleNominalChange = (e) => {
+    const raw = e.target.value.replace(/[^0-9]/g, '');
+    if (!raw) {
+      setGiftForm(prev => ({ ...prev, nominal: '' }));
+      return;
+    }
+    const formatted = new Intl.NumberFormat('id-ID').format(raw);
+    setGiftForm(prev => ({ ...prev, nominal: formatted }));
+  };
+
+  const handleGiftConfirm = (e) => {
+    e.preventDefault();
+    const sender = giftForm.nama.trim() || guestName.trim();
+    if (!sender) {
+      alert('Silakan masukkan nama pengirim.');
+      return;
+    }
+    if (!giftForm.nominal.trim()) {
+      alert('Silakan masukkan nilai nominal.');
+      return;
+    }
+
+    const isBCA = giftForm.bank === 'BCA';
+    const targetPhone = isBCA ? '6282328890889' : '6282330776218';
+    const bankDetails = isBCA
+      ? 'BCA (3151796000 a.n Amanda Febiola Danu Garini)'
+      : 'BTN (4701580037400 a.n Iman Hadi Ramadhani)';
+
+    let message = `Halo ${isBCA ? 'Amanda' : 'Dhani'} & ${isBCA ? 'Dhani' : 'Amanda'},\n\n`;
+    message += `Saya ingin konfirmasi pengiriman kado pernikahan secara cashless:\n\n`;
+    message += `• *Nama Pengirim:* ${sender}\n`;
+    message += `• *Bank Tujuan:* ${bankDetails}\n`;
+    message += `• *Nilai Nominal:* Rp ${giftForm.nominal}\n`;
+    if (giftForm.message.trim()) {
+      message += `• *Ucapan / Doa:* ${giftForm.message.trim()}\n`;
+    }
+    message += `\nDoa restu kami menyertai kalian berdua. Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin!`;
+
+    const waUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank');
+    setShowGiftModal(false);
+  };
 
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz02lWlLwvmoflqCq0JVjkyVXjxrO0DxvXaWa41Nfx4L5NriuXS5G9RtRcUetTcdsf6/exec';
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [comments, setComments] = useState([]);
   const [isLoadingComments, setIsLoadingComments] = useState(true);
-
-  const fetchComments = async () => {
-    try {
-      setIsLoadingComments(true);
-      const res = await fetch(`${SCRIPT_URL}?t=${Date.now()}`);
-      const json = await res.json();
-      if (json.result === 'success' && json.data) {
-        setComments(json.data);
-      }
-    } catch (err) {
-      console.error('Failed to fetch comments:', err);
-    } finally {
-      setIsLoadingComments(false);
-    }
-  };
 
   const handleWishSubmit = async (e) => {
     e.preventDefault();
@@ -136,21 +204,32 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchComments();
+    let ignore = false;
+    fetch(`${SCRIPT_URL}?t=${Date.now()}`)
+      .then(res => res.json())
+      .then(json => {
+        if (!ignore && json.result === 'success' && json.data) {
+          setComments(json.data);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to fetch comments:', err);
+      })
+      .finally(() => {
+        if (!ignore) {
+          setIsLoadingComments(false);
+        }
+      });
 
-    // Ambil parameter dari URL, contoh: ?to=Budi+Santoso
-    const params = new URLSearchParams(window.location.search);
-    const to = params.get('to');
-    if (to) {
-      setGuestName(to);
-      setWishForm(prev => ({ ...prev, nama: to }));
-    }
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date().getTime();
-      const distance = targetDate - now;
+      const distance = TARGET_DATE - now;
 
       if (distance < 0) {
         clearInterval(interval);
@@ -730,11 +809,11 @@ export default function App() {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'flex-end',
-                  zIndex: 5,
+                  zIndex: 1,
                   pointerEvents: 'none',
                 }}>
                   <img src={couple1Img} alt="" style={{
-                    width: 'clamp(250px, 85vw, 460px)',
+                    width: 'clamp(50px, 85vw, 460px)',
                     maxHeight: '36vh',
                     height: 'auto',
                     objectFit: 'contain',
@@ -870,7 +949,7 @@ export default function App() {
                     whileInView={{ opacity: 1, y: 0, x: 0 }}
                     viewport={{ once: false, amount: 0.1 }}
                     transition={{ duration: 0.95, ease: "easeOut" }}
-                    style={{ zIndex: 6, marginRight: '-5vw' }}
+                    style={{ zIndex: 6, marginRight: '-2vw' }}
                   >
                     <motion.img
                       src={coupleImg}
@@ -2074,7 +2153,832 @@ export default function App() {
                 </AnimatePresence>
               </div>
 
-              {/* ===== SECTION 8: CLOSING ===== */}
+              {/* ===== SECTION 8: WEDDING GIFT ===== */}
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                minHeight: '100vh',
+                overflow: 'hidden',
+                scrollSnapAlign: 'start',
+                scrollSnapStop: 'always',
+                backgroundImage: `url(${bg5})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                paddingTop: '6vh',
+                paddingBottom: '8vh',
+                boxSizing: 'border-box',
+              }}>
+                {/* FLOWERS */}
+                <img
+                  src={bunga7}
+                  alt=""
+                  style={{
+                    position: 'absolute',
+                    top: '-4%',
+                    left: '-15%',
+                    width: 'clamp(140px, 38vw, 240px)',
+                    opacity: 0.8,
+                    transform: 'rotate(-10deg)',
+                    pointerEvents: 'none',
+                    zIndex: 1,
+                  }}
+                />
+                <img
+                  src={bunga5}
+                  alt=""
+                  style={{
+                    position: 'absolute',
+                    top: '-3%',
+                    right: '-8%',
+                    width: 'clamp(120px, 32vw, 200px)',
+                    opacity: 0.75,
+                    transform: 'rotate(20deg) scaleX(-1)',
+                    pointerEvents: 'none',
+                    zIndex: 1,
+                  }}
+                />
+
+                {/* TITLE & DESCRIPTION */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  transition={{ duration: 0.7 }}
+                  style={{ textAlign: 'center', marginBottom: '3vh', zIndex: 10, padding: '0 20px' }}
+                >
+                  <h2 style={{
+                    fontFamily: "'Rouge Script', cursive",
+                    fontWeight: 600,
+                    fontSize: 'clamp(36px, 11vw, 50px)',
+                    color: '#2b3f5c',
+                    margin: '0 0 8px 0',
+                    textShadow: '0 2px 4px rgba(255,255,255,0.6)',
+                  }}>Wedding Gift</h2>
+                  <p style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: 'clamp(12px, 3.5vw, 14px)',
+                    fontWeight: 100,
+                    color: '#444',
+                    maxWidth: '340px',
+                    margin: '0 auto',
+                    lineHeight: 1.6,
+                  }}>
+                    Doa restu anda merupakan karunia yang sangat berarti bagi kami. Jika memberi adalah ungkapan tanda kasih, anda dapat memberi kado secara cashless.
+                  </p>
+                </motion.div>
+
+                {/* ATM CARDS CONTAINER */}
+                <div style={{
+                  width: '90%',
+                  maxWidth: '360px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                  zIndex: 10,
+                  alignItems: 'center',
+                }}>
+                  {/* CARD 1: BCA */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 25 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ duration: 0.6 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setGiftForm(prev => ({ ...prev, bank: 'BCA' }))}
+                    style={{
+                      width: '100%',
+                      maxWidth: '350px',
+                      height: '195px',
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, #0d3b66 0%, #002244 55%, #00122e 100%)',
+                      boxShadow: giftForm.bank === 'BCA'
+                        ? '0 0 0 2.5px #d4c08c, 0 14px 28px rgba(0, 34, 68, 0.45)'
+                        : '0 10px 24px rgba(0, 34, 68, 0.25)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      padding: '16px 18px',
+                      boxSizing: 'border-box',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      color: '#ffffff',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                    }}
+                  >
+                    {/* Shimmer / Gloss Overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(115deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 45%, rgba(255,255,255,0.06) 80%)',
+                      pointerEvents: 'none',
+                    }} />
+
+                    {/* Radial Watermark */}
+                    <div style={{
+                      position: 'absolute',
+                      right: '-30px',
+                      top: '-30px',
+                      width: '180px',
+                      height: '180px',
+                      borderRadius: '50%',
+                      background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%)',
+                      pointerEvents: 'none',
+                    }} />
+
+                    {/* TOP ROW: CHIP & LOGO */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 2 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {/* EMV Gold Chip */}
+                        <div style={{
+                          width: '38px',
+                          height: '28px',
+                          borderRadius: '5px',
+                          background: 'linear-gradient(135deg, #d4af37 0%, #fbf5b7 50%, #aa771c 100%)',
+                          boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.3)',
+                          position: 'relative',
+                          border: '1px solid #8a6210',
+                          overflow: 'hidden',
+                        }}>
+                          <div style={{ position: 'absolute', width: '100%', height: '1px', backgroundColor: '#8a6210', top: '35%' }} />
+                          <div style={{ position: 'absolute', width: '100%', height: '1px', backgroundColor: '#8a6210', top: '65%' }} />
+                          <div style={{ position: 'absolute', height: '100%', width: '1px', backgroundColor: '#8a6210', left: '35%' }} />
+                          <div style={{ position: 'absolute', height: '100%', width: '1px', backgroundColor: '#8a6210', left: '65%' }} />
+                        </div>
+
+                        {/* Contactless symbol */}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="2.5" strokeLinecap="round">
+                          <path d="M7 16.5a7 7 0 0 1 0-9" />
+                          <path d="M11 19.5a11 11 0 0 1 0-15" />
+                          <path d="M15 22.5a15 15 0 0 1 0-21" />
+                        </svg>
+                      </div>
+
+                      {/* BCA Brand */}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                        <div style={{
+                          backgroundColor: '#ffffff',
+                          padding: '2px 8px',
+                          borderRadius: '4px',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                        }}>
+                          <span style={{
+                            fontFamily: 'system-ui, -apple-system, sans-serif',
+                            fontWeight: 900,
+                            fontSize: '14px',
+                            color: '#003366',
+                            letterSpacing: '0.5px',
+                            lineHeight: 1
+                          }}>
+                            BCA
+                          </span>
+                        </div>
+                        <span style={{ fontSize: '7px', letterSpacing: '1px', color: 'rgba(255,255,255,0.75)', fontWeight: 600, marginTop: '2px', textTransform: 'uppercase' }}>
+                          PASPOR DEBIT
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* CENTER ROW: NUMBER */}
+                    <div style={{ zIndex: 2, margin: '2px 0' }}>
+                      <div style={{ fontSize: '7.5px', letterSpacing: '1px', color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase', marginBottom: '2px' }}>
+                        Nomor Rekening
+                      </div>
+                      <div style={{
+                        fontFamily: "'Courier New', Courier, monospace",
+                        fontSize: 'clamp(17px, 5vw, 21px)',
+                        fontWeight: 700,
+                        letterSpacing: '2.5px',
+                        color: '#ffffff',
+                        textShadow: '0 2px 4px rgba(0,0,0,0.6), 0 0 8px rgba(255,255,255,0.2)',
+                      }}>
+                        3151 7960 00
+                      </div>
+                    </div>
+
+                    {/* BOTTOM ROW: NAME & COPY */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', zIndex: 2 }}>
+                      <div>
+                        <div style={{ fontSize: '7.5px', letterSpacing: '1px', color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase' }}>
+                          Nama Pemilik
+                        </div>
+                        <div style={{
+                          fontFamily: 'system-ui, -apple-system, sans-serif',
+                          fontSize: 'clamp(10px, 3vw, 12px)',
+                          fontWeight: 700,
+                          letterSpacing: '0.6px',
+                          color: '#f8fafc',
+                          textTransform: 'uppercase',
+                          marginTop: '2px',
+                          textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                        }}>
+                          Amanda Febiola Danu Garini
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCopyAccount('3151796000', 'BCA');
+                          }}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            backgroundColor: copiedBank === 'BCA' ? '#22c55e' : 'rgba(255, 255, 255, 0.22)',
+                            backdropFilter: 'blur(5px)',
+                            border: '1px solid rgba(255, 255, 255, 0.4)',
+                            color: '#ffffff',
+                            padding: '4px 9px',
+                            borderRadius: '14px',
+                            fontSize: '10px',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.25s ease',
+                            fontFamily: "'Playfair Display', serif",
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+                          }}
+                        >
+                          {copiedBank === 'BCA' ? (
+                            <span>✓ Tersalin!</span>
+                          ) : (
+                            <>
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                              </svg>
+                              Salin
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setGiftForm(prev => ({ ...prev, bank: 'BCA' }));
+                            setShowGiftModal(true);
+                          }}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            backgroundColor: '#d4c08c',
+                            color: '#1b2b4a',
+                            border: 'none',
+                            padding: '4px 9px',
+                            borderRadius: '14px',
+                            fontSize: '10px',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.25s ease',
+                            fontFamily: "'Playfair Display', serif",
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
+                          }}
+                        >
+                          Konfirmasi
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* CARD 2: BTN */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 25 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setGiftForm(prev => ({ ...prev, bank: 'BTN' }))}
+                    style={{
+                      width: '100%',
+                      maxWidth: '350px',
+                      height: '195px',
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, #0e2b4f 0%, #173d6b 55%, #07172c 100%)',
+                      boxShadow: giftForm.bank === 'BTN'
+                        ? '0 0 0 2.5px #d4c08c, 0 14px 28px rgba(14, 43, 79, 0.45)'
+                        : '0 10px 24px rgba(14, 43, 79, 0.25)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      padding: '16px 18px',
+                      boxSizing: 'border-box',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      color: '#ffffff',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      border: '1px solid rgba(212, 192, 140, 0.35)',
+                    }}
+                  >
+                    {/* Shimmer / Gloss Overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(115deg, rgba(234, 170, 0, 0.12) 0%, rgba(255,255,255,0) 45%, rgba(212, 192, 140, 0.08) 80%)',
+                      pointerEvents: 'none',
+                    }} />
+
+                    {/* Radial Watermark */}
+                    <div style={{
+                      position: 'absolute',
+                      right: '-30px',
+                      top: '-30px',
+                      width: '180px',
+                      height: '180px',
+                      borderRadius: '50%',
+                      background: 'radial-gradient(circle, rgba(234, 170, 0, 0.08) 0%, rgba(234, 170, 0, 0) 70%)',
+                      pointerEvents: 'none',
+                    }} />
+
+                    {/* TOP ROW: CHIP & LOGO */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 2 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {/* EMV Gold Chip */}
+                        <div style={{
+                          width: '38px',
+                          height: '28px',
+                          borderRadius: '5px',
+                          background: 'linear-gradient(135deg, #d4af37 0%, #fbf5b7 50%, #aa771c 100%)',
+                          boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.3)',
+                          position: 'relative',
+                          border: '1px solid #8a6210',
+                          overflow: 'hidden',
+                        }}>
+                          <div style={{ position: 'absolute', width: '100%', height: '1px', backgroundColor: '#8a6210', top: '35%' }} />
+                          <div style={{ position: 'absolute', width: '100%', height: '1px', backgroundColor: '#8a6210', top: '65%' }} />
+                          <div style={{ position: 'absolute', height: '100%', width: '1px', backgroundColor: '#8a6210', left: '35%' }} />
+                          <div style={{ position: 'absolute', height: '100%', width: '1px', backgroundColor: '#8a6210', left: '65%' }} />
+                        </div>
+
+                        {/* Contactless symbol */}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="2.5" strokeLinecap="round">
+                          <path d="M7 16.5a7 7 0 0 1 0-9" />
+                          <path d="M11 19.5a11 11 0 0 1 0-15" />
+                          <path d="M15 22.5a15 15 0 0 1 0-21" />
+                        </svg>
+                      </div>
+
+                      {/* BTN Brand */}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                        <div style={{
+                          backgroundColor: '#ffffff',
+                          padding: '2px 8px',
+                          borderRadius: '4px',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                        }}>
+                          <span style={{
+                            fontFamily: 'system-ui, -apple-system, sans-serif',
+                            fontWeight: 900,
+                            fontSize: '14px',
+                            color: '#eaaa00',
+                            letterSpacing: '0.5px',
+                            lineHeight: 1
+                          }}>
+                            BTN
+                          </span>
+                        </div>
+                        <span style={{ fontSize: '7px', letterSpacing: '1px', color: '#d4c08c', fontWeight: 600, marginTop: '2px', textTransform: 'uppercase' }}>
+                          DEBIT BTN
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* CENTER ROW: NUMBER */}
+                    <div style={{ zIndex: 2, margin: '2px 0' }}>
+                      <div style={{ fontSize: '7.5px', letterSpacing: '1px', color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase', marginBottom: '2px' }}>
+                        Nomor Rekening
+                      </div>
+                      <div style={{
+                        fontFamily: "'Courier New', Courier, monospace",
+                        fontSize: 'clamp(17px, 5vw, 21px)',
+                        fontWeight: 700,
+                        letterSpacing: '2.5px',
+                        color: '#ffffff',
+                        textShadow: '0 2px 4px rgba(0,0,0,0.6), 0 0 8px rgba(234, 170, 0, 0.2)',
+                      }}>
+                        4701 5800 3740 0
+                      </div>
+                    </div>
+
+                    {/* BOTTOM ROW: NAME & COPY */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', zIndex: 2 }}>
+                      <div>
+                        <div style={{ fontSize: '7.5px', letterSpacing: '1px', color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase' }}>
+                          Nama Pemilik
+                        </div>
+                        <div style={{
+                          fontFamily: 'system-ui, -apple-system, sans-serif',
+                          fontSize: 'clamp(10px, 3vw, 12px)',
+                          fontWeight: 700,
+                          letterSpacing: '0.6px',
+                          color: '#f8fafc',
+                          textTransform: 'uppercase',
+                          marginTop: '2px',
+                          textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                        }}>
+                          Iman Hadi Ramadhani
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCopyAccount('4701580037400', 'BTN');
+                          }}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            backgroundColor: copiedBank === 'BTN' ? '#22c55e' : 'rgba(255, 255, 255, 0.22)',
+                            backdropFilter: 'blur(5px)',
+                            border: '1px solid rgba(255, 255, 255, 0.4)',
+                            color: '#ffffff',
+                            padding: '4px 9px',
+                            borderRadius: '14px',
+                            fontSize: '10px',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.25s ease',
+                            fontFamily: "'Playfair Display', serif",
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+                          }}
+                        >
+                          {copiedBank === 'BTN' ? (
+                            <span>✓ Tersalin!</span>
+                          ) : (
+                            <>
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                              </svg>
+                              Salin
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setGiftForm(prev => ({ ...prev, bank: 'BTN' }));
+                            setShowGiftModal(true);
+                          }}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            backgroundColor: '#d4c08c',
+                            color: '#1b2b4a',
+                            border: 'none',
+                            padding: '4px 9px',
+                            borderRadius: '14px',
+                            fontSize: '10px',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.25s ease',
+                            fontFamily: "'Playfair Display', serif",
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
+                          }}
+                        >
+                          Konfirmasi
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* TOMBOL BUKA POP-UP FORM KONFIRMASI */}
+                <motion.button
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setShowGiftModal(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    backgroundColor: '#d4c08c',
+                    color: '#1b2b4a',
+                    padding: '11px 22px',
+                    borderRadius: '25px',
+                    border: 'none',
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: '13.5px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 15px rgba(212, 192, 140, 0.45)',
+                    zIndex: 10,
+                    marginTop: '20px',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="8" width="18" height="13" rx="2"></rect>
+                    <path d="M12 8v13"></path>
+                    <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"></path>
+                    <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"></path>
+                  </svg>
+                  Konfirmasi Hadiah via WhatsApp
+                </motion.button>
+
+                {/* POP-UP MODAL FORM KONFIRMASI */}
+                <AnimatePresence>
+                  {showGiftModal && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setShowGiftModal(false)}
+                      style={{
+                        position: 'fixed',
+                        inset: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                        backdropFilter: 'blur(6px)',
+                        zIndex: 10000,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '20px',
+                        boxSizing: 'border-box',
+                      }}
+                    >
+                      <motion.div
+                        initial={{ y: 35, scale: 0.95, opacity: 0 }}
+                        animate={{ y: 0, scale: 1, opacity: 1 }}
+                        exit={{ y: 35, scale: 0.95, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          position: 'relative',
+                          width: '100%',
+                          maxWidth: '380px',
+                          maxHeight: '88vh',
+                          overflowY: 'auto',
+                          backgroundColor: '#ffffff',
+                          borderRadius: '20px',
+                          padding: '26px 20px 22px 20px',
+                          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
+                          border: '1px solid #d4c08c',
+                          boxSizing: 'border-box',
+                        }}
+                      >
+                        {/* Tombol Tutup X */}
+                        <button
+                          type="button"
+                          onClick={() => setShowGiftModal(false)}
+                          style={{
+                            position: 'absolute',
+                            top: '12px',
+                            right: '15px',
+                            background: 'none',
+                            border: 'none',
+                            fontSize: '26px',
+                            cursor: 'pointer',
+                            color: '#2b3f5c',
+                            lineHeight: 1,
+                            zIndex: 10,
+                          }}
+                        >
+                          &times;
+                        </button>
+
+                        <div style={{ textAlign: 'center', marginBottom: '14px' }}>
+                          <h3 style={{
+                            fontFamily: "'Playfair Display', serif",
+                            fontSize: '17px',
+                            fontWeight: 700,
+                            color: '#1b2b4a',
+                            margin: '0 0 4px 0',
+                          }}>
+                            Konfirmasi Kado Cashless
+                          </h3>
+                          <p style={{
+                            fontFamily: "'Playfair Display', serif",
+                            fontSize: '11.5px',
+                            color: '#555',
+                            margin: 0,
+                            fontStyle: 'italic',
+                          }}>
+                            Kirim konfirmasi kado langsung via WhatsApp
+                          </p>
+                        </div>
+
+                        <form onSubmit={handleGiftConfirm} style={{ display: 'flex', flexDirection: 'column', gap: '11px' }}>
+                          {/* Bank Selection */}
+                          <div>
+                            <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 600, color: '#1b2b4a', marginBottom: '5px' }}>
+                              Pilih Rekening Tujuan:
+                            </label>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                              <button
+                                type="button"
+                                onClick={() => setGiftForm(prev => ({ ...prev, bank: 'BCA' }))}
+                                style={{
+                                  padding: '8px 6px',
+                                  borderRadius: '8px',
+                                  border: giftForm.bank === 'BCA' ? '2px solid #003366' : '1px solid #d4c08c',
+                                  backgroundColor: giftForm.bank === 'BCA' ? '#003366' : 'rgba(255, 255, 255, 0.85)',
+                                  color: giftForm.bank === 'BCA' ? '#ffffff' : '#2b3f5c',
+                                  fontFamily: "'Playfair Display', serif",
+                                  fontSize: '11.5px',
+                                  fontWeight: 700,
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'center',
+                                  gap: '2px',
+                                }}
+                              >
+                                <span>BCA (Amanda)</span>
+                                <span style={{ fontSize: '8.5px', opacity: giftForm.bank === 'BCA' ? 0.9 : 0.65, fontWeight: 500 }}>
+                                  WA: +62 823-2889-0889
+                                </span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => setGiftForm(prev => ({ ...prev, bank: 'BTN' }))}
+                                style={{
+                                  padding: '8px 6px',
+                                  borderRadius: '8px',
+                                  border: giftForm.bank === 'BTN' ? '2px solid #0b2545' : '1px solid #d4c08c',
+                                  backgroundColor: giftForm.bank === 'BTN' ? '#0b2545' : 'rgba(255, 255, 255, 0.85)',
+                                  color: giftForm.bank === 'BTN' ? '#ffffff' : '#2b3f5c',
+                                  fontFamily: "'Playfair Display', serif",
+                                  fontSize: '11.5px',
+                                  fontWeight: 700,
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'center',
+                                  gap: '2px',
+                                }}
+                              >
+                                <span>BTN (Dhani)</span>
+                                <span style={{ fontSize: '8.5px', opacity: giftForm.bank === 'BTN' ? 0.9 : 0.65, fontWeight: 500 }}>
+                                  WA: +62 823-3077-6218
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Nama Pengirim */}
+                          <div>
+                            <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 600, color: '#1b2b4a', marginBottom: '4px' }}>
+                              Nama Pengirim:
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Nama Pengirim"
+                              value={giftForm.nama}
+                              onChange={(e) => setGiftForm({ ...giftForm, nama: e.target.value })}
+                              required
+                              readOnly={!!guestName}
+                              style={{
+                                width: '100%',
+                                padding: '9px 12px',
+                                borderRadius: '8px',
+                                border: '1px solid #d4c08c',
+                                backgroundColor: guestName ? 'rgba(235, 235, 235, 0.85)' : 'rgba(255,255,255,0.85)',
+                                fontFamily: "'Playfair Display', serif",
+                                fontSize: '13px',
+                                color: guestName ? '#666' : '#2b3f5c',
+                                boxSizing: 'border-box',
+                                outline: 'none',
+                                cursor: guestName ? 'not-allowed' : 'text',
+                              }}
+                            />
+                            {guestName && (
+                              <span style={{ fontSize: '9.5px', color: '#666', fontStyle: 'italic', marginTop: '2px', display: 'block' }}>
+                                *Nama diambil otomatis dari tautan undangan
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Nilai Rupiah / Nominal */}
+                          <div>
+                            <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 600, color: '#1b2b4a', marginBottom: '4px' }}>
+                              Nilai Nominal (Rp):
+                            </label>
+                            <div style={{ position: 'relative' }}>
+                              <span style={{
+                                position: 'absolute',
+                                left: '12px',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                fontSize: '13px',
+                                fontWeight: 700,
+                                color: '#2b3f5c',
+                                pointerEvents: 'none',
+                              }}>
+                                Rp
+                              </span>
+                              <input
+                                type="text"
+                                inputMode="numeric"
+                                placeholder="0"
+                                value={giftForm.nominal}
+                                onChange={handleNominalChange}
+                                required
+                                style={{
+                                  width: '100%',
+                                  padding: '9px 12px 9px 36px',
+                                  borderRadius: '8px',
+                                  border: '1px solid #d4c08c',
+                                  backgroundColor: 'rgba(255,255,255,0.85)',
+                                  fontFamily: "'Playfair Display', serif",
+                                  fontSize: '13px',
+                                  fontWeight: 600,
+                                  color: '#2b3f5c',
+                                  boxSizing: 'border-box',
+                                  outline: 'none',
+                                }}
+                              />
+                            </div>
+
+                            {/* Presets */}
+                            
+                          </div>
+
+                          {/* Ucapan / Pesan */}
+                          <div>
+                            <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 600, color: '#1b2b4a', marginBottom: '4px' }}>
+                              Ucapan / Pesan Konfirmasi:
+                            </label>
+                            <textarea
+                              placeholder="Tuliskan ucapan atau doa untuk kedua mempelai..."
+                              value={giftForm.message}
+                              onChange={(e) => setGiftForm({ ...giftForm, message: e.target.value })}
+                              rows="3"
+                              style={{
+                                width: '100%',
+                                padding: '9px 12px',
+                                borderRadius: '8px',
+                                border: '1px solid #d4c08c',
+                                backgroundColor: 'rgba(255,255,255,0.85)',
+                                fontFamily: "'Playfair Display', serif",
+                                fontSize: '13px',
+                                color: '#2b3f5c',
+                                boxSizing: 'border-box',
+                                outline: 'none',
+                                resize: 'none',
+                              }}
+                            />
+                          </div>
+
+                          {/* WhatsApp Submit Button */}
+                          <motion.button
+                            type="submit"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            style={{
+                              marginTop: '4px',
+                              padding: '11px 16px',
+                              borderRadius: '8px',
+                              border: 'none',
+                              backgroundColor: '#25D366',
+                              color: '#ffffff',
+                              fontFamily: "'Playfair Display', serif",
+                              fontWeight: 700,
+                              fontSize: '13.5px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px',
+                              boxShadow: '0 4px 12px rgba(37, 211, 102, 0.35)',
+                              transition: 'all 0.3s ease',
+                            }}
+                          >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.974.55 2.091.808 3.245.808 3.18 0 5.766-2.587 5.767-5.766.001-3.181-2.585-5.795-5.768-5.795zm3.385 8.163c-.144.405-.837.774-1.17.822-.312.043-.683.076-2.221-.527-1.782-.701-2.918-2.518-3.007-2.636-.089-.118-.718-.956-.718-1.823 0-.867.452-1.294.614-1.472.162-.178.354-.223.473-.223.118 0 .237.001.341.006.108.005.253-.041.396.303.144.346.495 1.206.539 1.294.044.089.073.193.015.311-.059.119-.089.193-.178.297-.089.104-.187.232-.267.311-.089.089-.182.185-.078.363.104.178.461.761.99 1.233.682.608 1.258.796 1.436.885.178.089.282.074.386-.044.104-.119.444-.518.563-.696.119-.178.237-.148.396-.089.158.059 1.006.474 1.179.563.173.089.289.133.332.207.045.074.045.43-.099.835z" />
+                            </svg>
+                            Konfirmasi via WhatsApp
+                          </motion.button>
+                        </form>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ===== SECTION 9: CLOSING ===== */}
               <div style={{
                 position: 'relative',
                 width: '100%',
@@ -2277,9 +3181,9 @@ export default function App() {
                       src={couple3Img}
                       alt="Couple"
                       style={{
-                        width: 'clamp(150px, 42vw, 220px)',
+                        width: 'clamp(300px, 42vw, 220px)',
                         display: 'block',
-                        right: '30%'
+                        // right: '100%'
                       }}
                     />
                     {/* BUTTERFLY STANDBY 1 (Left) */}
